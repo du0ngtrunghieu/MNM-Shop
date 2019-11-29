@@ -22,6 +22,7 @@ site.directory = "uploads/"
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('products.urls')),
+    path('', include('carts.urls')),
     path('accounts/', include('allauth.urls')),
     path('admin/filebrowser/', site.urls),
 ]

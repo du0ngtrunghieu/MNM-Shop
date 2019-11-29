@@ -1,46 +1,31 @@
 from django.db import models
 from django.urls import reverse
-from django.utils.text import slugify
+from slugify import slugify
 from shop.untils import generate_unique_slug
 from categories.models import Category
 from filebrowser.fields import FileBrowseField
 # Create your models here.
 LABEL_CHOICES = (
-    ('0', 'News'),
-    ('25', '25%'),
-    ('15', '15%')
+    ('N', 'News'),
+    ('H', 'Hot'),
+    ('T', 'Trend')
 )
 
-class ProductImage(models.Model):
-    title = models.CharField('Tên bộ ảnh',max_length=200)
-    thumbnail = FileBrowseField("Image", max_length=5000, directory="uploads/", extensions=[".jpg",".jpeg","png"], blank=True)
-    def __str__(self):
-        return self.title
 
-    def get_absolute_url(self):
-        return reverse("ProductImage_detail", kwargs={"pk": self.pk})
-class Feature(models.Model):
-    title = models.CharField('Tên ',max_length=200)
-    class Meta:
-            
-        verbose_name_plural = "Tính năng Sản Phẩm"
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse("Feature_detail", kwargs={"pk": self.pk})
+    
 
 class Product(models.Model):
     title = models.CharField('Tên sản phẩm',max_length=200)
     price = models.FloatField('Giá')
-    discount_price = models.FloatField(blank=True, null=True)
+    discount_price = models.FloatField('Giảm giá (%)',blank=True, null=True)
     categories = models.ManyToManyField(Category)
     label = models.CharField(choices=LABEL_CHOICES, max_length=20)
     slug = models.SlugField(unique=True,editable=False , blank = True)
-    description = models.TextField() 
-    feature = models.ManyToManyField(Feature) # Tính năng
-    images = models.ManyToManyField(ProductImage)
+    description = models.TextField('Thông tin sản phẩm') 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    available = models.BooleanField(default=True)
+    
     
     class Meta:
             
@@ -56,6 +41,21 @@ class Product(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("Product_detail", kwargs={"pk": self.pk})
+        return reverse("detail-products", kwargs={"slug": self.slug})
+
+class Feature(models.Model):
+    title = models.CharField('Tên ',max_length=200)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,null=True)
+    class Meta:
+            
+        verbose_name_plural = "Tính năng Sản Phẩm"
+
+    def __str__(self):
+        return self.title
 
 
+class ProductImage(models.Model):
+   
+    thumbnail = FileBrowseField("Image", max_length=5000, directory="products/", extensions=[".jpg",".jpeg",".png"], blank=True)
+    product = models.ForeignKey(Product,related_name='images', on_delete=models.CASCADE,null=True)
+    

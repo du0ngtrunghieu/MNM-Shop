@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     
     'products',
     'categories',
+    'carts',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -141,7 +142,5 @@ MEDIA_URL = '/media/'
 VENV_PATH = os.path.dirname(BASE_DIR)
 STATIC_ROOT = os.path.join(VENV_PATH,'static_root')
 MEDIA_ROOT = os.path.join(VENV_PATH , 'media_root')
-DIRECTORY = getattr(settings, "FILEBROWSER_DIRECTORY", 'uploads/')
 
-
-VERSIONS_BASEDIR = getattr(settings, 'FILEBROWSER_VERSIONS_BASEDIR', '_versions')
+CART_SESSION_ID = 'cart'
