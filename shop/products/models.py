@@ -16,7 +16,8 @@ LABEL_CHOICES = (
 
 class Product(models.Model):
     title = models.CharField('Tên sản phẩm',max_length=200)
-    price = models.FloatField('Giá')
+    price = models.BigIntegerField('Giá')
+    
     discount_price = models.FloatField('Giảm giá (%)',blank=True, null=True)
     categories = models.ManyToManyField(Category)
     label = models.CharField(choices=LABEL_CHOICES, max_length=20)
@@ -42,6 +43,8 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse("product:detail-products", kwargs={"slug": self.slug})
+    def get_price_vnd(self):
+        return '{:,} VNĐ'.format(self.price)
 
 class Feature(models.Model):
     title = models.CharField('Tên ',max_length=200)

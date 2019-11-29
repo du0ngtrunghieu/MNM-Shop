@@ -29,6 +29,7 @@
                         {% for a in all_product %}
                     <li>
                             <p>{{a.title}}</p>
+                            <p>{{a.get_price_vnd}}</p>
                             {% for b in a.images.all %}
                             <img src="{{ b.thumbnail.url }}"  width="100" height="70" alt="Image">
                             {% endfor %}

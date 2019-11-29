@@ -38,6 +38,8 @@ class Cart(object):
         for item in self.cart.values():
             item['price'] = Decimal(item['price'])
             item['total_price'] = item['price'] * item['quantity']
+            item['total_price_vnd'] = '{:,} VNĐ'.format(item['total_price'])
             yield item
     def get_total_price(self):
-        return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
+        return '{:,} VNĐ'.format(sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values()))
+    

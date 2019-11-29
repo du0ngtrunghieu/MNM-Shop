@@ -27,7 +27,7 @@
                         {% with product=item.product  %}
                         <p>Tên sản phẩm :{{ product.title}}</p>
                         <p>Số lượng :{{ item.quantity}}</p>
-                        <p>Giá tiền  :{{ item.total_price}}</p>
+                        <p>Giá tiền  :{{ item.total_price_vnd}}</p>
                         
                         
                         <a href="{% url 'cart:remove-cart' product.slug %}" class="btn btn-sm btn-danger">Xoá</a>
@@ -37,9 +37,9 @@
             {%endfor%}
             <hr>
             {% with totail_items=cart|length %}
-            <p>Tổng số sản phẩm trong giỏ hàng : {{totail_items}} </p>
+            <p>Tổng số sản phẩm trong giỏ hàng : {{ totail_items}} </p>
             {% endwith %}
-            <p>Tổng giá tiền :{{cart.get_total_price}} </p>
+            <p>Tổng giá tiền :{{ cart.get_total_price}} </p>
            
         </ul>
     </div>
