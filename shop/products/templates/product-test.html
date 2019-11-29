@@ -36,7 +36,7 @@
         
                             <a href="{{ a.get_absolute_url }}" href="#" role="button">Xem chi tiết</a> 
 
-                            <a href="{% url 'add-cart' a.slug %}" role="button">Thêm vào giỏ hàng</a>
+                            <a href="{% url 'cart:add-cart' a.slug %}" role="button">Thêm vào giỏ hàng</a>
                             
                     </li>
                     {% empty %}

@@ -41,7 +41,7 @@ class Product(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("detail-products", kwargs={"slug": self.slug})
+        return reverse("product:detail-products", kwargs={"slug": self.slug})
 
 class Feature(models.Model):
     title = models.CharField('Tên ',max_length=200)
