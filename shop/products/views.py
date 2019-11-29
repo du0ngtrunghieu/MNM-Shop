@@ -11,7 +11,7 @@ def ProductListPage(request):
     numb_display_page = 5
     all_product = Product.objects.filter( available = True)
     paginator = Paginator(all_product, numb_display_page)
-    print(all_product)
+    
     page = request.GET.get('page')
     try:
         products = paginator.page(page)
