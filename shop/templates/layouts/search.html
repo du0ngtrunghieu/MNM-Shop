@@ -1,57 +1,51 @@
+{% load static %}
 <div class="container logo-bar">
-    <div class="col-md-3 logo-name text-center">
-        <a href="index.html"><img src="img/index/logo.png" alt="" class="img-responsive" /></a>
-    </div>
-    <div class="col-md-6 search">
-        <input type="text" name="search" placeholder="Search by product name" />
-        <select>
-            <option>All Categories</option>
-            <option>Men</option>
-            <option>Women</option>
-            <option>Electronics</option>
-            <option>Smart Phones</option>
-        </select>
-        <div class="round search-round"><a href="#"><i class="flaticon-search"></i></a></div>
-    </div>
-    <div class="col-md-3 shopping-cart">
-        <div class="icon-round">
+        <div class="col-md-3 logo-name text-center">
+            <a href="index.html"><img src="{% static 'img/index/logo.png'%}" alt="" class="img-responsive" /></a>
+        </div>
+        <div class="col-md-6 search">
+            <input type="text" name="search" placeholder="Search by product name" />
+            <select>
+                <option>All Categories</option>
+                <option>Men</option>
+                <option>Women</option>
+                <option>Electronics</option>
+                <option>Smart Phones</option>
+            </select>
+            <div class="round search-round"><a href="#"><i class="flaticon-search"></i></a></div>
+        </div>
+        <div class="col-md-3 shopping-cart">
+            <div class="icon-round">	
             <a href="#"><i class="flaticon-refresh"></i></a>
             <a href="#"><i class="flaticon-heart"></i></a>
-            <div class="cart-item">
-                <div class="cart-mail"><a href="#"><i class="flaticon-shopping-cart"></i><span>2</span></a>
+                <div class="cart-item">
+                    <div class="cart-mail"><a href="#"><i class="flaticon-shopping-cart"></i><span>2</span></a></div>
+                    <p><a href="#">My cart<span>$950.80</span></a></p>						
+                                
+                                <div class="cart-item-hover">
+                                    <div class="cart-item-list">
+                                        <img src="{% static 'img/index/cart-item-1.jpg'%}" alt="" />
+                                        <a href="#"><h3>Beats Classic Headphone</h3></a>
+                                        <b><a href="#">X</a></b>
+                                        <p>$88.00 <del>$120.00</del></p>
+                                    </div>
+                                    <div class="cart-item-list">
+                                        <img src="{% static 'img/index/cart-item-2.jpg'%}" alt="" />
+                                        <a href="#"><h3>Samsung Classic Tablet</h3></a>
+                                        <b><a href="#">X</a></b>
+                                        <p>$90.00 <del>$122.00</del></p>
+                                    </div>
+                                    <div class="border"></div>
+                                    <div class="cart-total">
+                                        <h6>Total Price</h6> <p>$178.00</p><div class="clearfix"></div>
+                                        <a href="#" class="cart-view">View all</a>
+                                        <a href="check-out.html" class="cart-checkout">Check out</a>
+                                    </div>
+                                </div>
+                                
                 </div>
-                <p><a href="#">My cart<span>$950.80</span></a></p>
-
-                <div class="cart-item-hover">
-                    <div class="cart-item-list">
-                        <img src="img/index/cart-item-1.jpg" alt="" />
-                        <a href="#">
-                            <h3>Beats Classic Headphone</h3>
-                        </a>
-                        <b><a href="#">X</a></b>
-                        <p>$88.00 <del>$120.00</del></p>
-                    </div>
-                    <div class="cart-item-list">
-                        <img src="img/index/cart-item-2.jpg" alt="" />
-                        <a href="#">
-                            <h3>Samsung Classic Tablet</h3>
-                        </a>
-                        <b><a href="#">X</a></b>
-                        <p>$90.00 <del>$122.00</del></p>
-                    </div>
-                    <div class="border"></div>
-                    <div class="cart-total">
-                        <h6>Total Price</h6>
-                        <p>$178.00</p>
-                        <div class="clearfix"></div>
-                        <a href="#" class="cart-view">View all</a>
-                        <a href="check-out.html" class="cart-checkout">Check out</a>
-                    </div>
-                </div>
-
             </div>
+           
         </div>
-
+        <div class="clearfix"></div>
     </div>
-    <div class="clearfix"></div>
-</div>

@@ -16,4 +16,4 @@ def cart_remove(request, slug):
 # Create your views here.
 def CartListPage(request):
     cart = Cart(request)
-    return render(request, 'cart-list.html', {'cart': cart})
+    return render(request, 'cart-detail.html', {'cart': cart})

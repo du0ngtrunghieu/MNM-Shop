@@ -1,0 +1,660 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<!-- Mirrored from theme.innovatory.in/Graby-shop/cart-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Nov 2019 15:12:28 GMT -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>cart</title>
+    <link rel="icon" href="{% static "img/index/favicon.png"%}" sizes="16x16">
+    <!--css-->
+    <link href="{% static "css/style.css"%}" rel="stylesheet" type="text/css">
+    <!--BOOTSTRAP-->
+    <link href="{% static "css/bootstrap.css"%}" rel="stylesheet" type="text/css">
+    <!--fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap&subset=vietnamese" rel="stylesheet">
+    <link href="{% static "fonts/font-awesome-4.7.0/css/font-awesome.min.css"%}" rel="stylesheet" type="text/css">
+    <link href="{% static "fonts/font/flaticon.css"%}" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+    <div class="shp-cart new-cart">
+
+        <a href="javascript:" id="return-to-top"><i class="fa fa-angle-up"></i></a>
+
+        <!--header-->
+        {% include './layouts/header.html' %}
+
+        <!--search-->
+        {% include './layouts/search.html' %}
+
+        <!--menu-->
+        {% include './layouts/menu.html' %}
+
+        <!--Header-->
+        <div class="container-fluid header-main">
+            <div class="container text-center">
+                <h2>Giỏ hàng</h2>
+                <div class="link-sec">
+                    <a href="#">Home</a> <i class="fa fa-angle-right"></i> <a href="#">Giỏ hàng</a>
+                </div>
+
+            </div>
+        </div>
+
+        <!--main-sec-->
+        <div class="container cart-sec padd-80">
+
+            <div id="msform">
+
+                <!-- progressbar -->
+                <ul id="progressbar">
+                    <li class="active">Cart</li>
+                    <li>Delivery</li>
+                    <li>Payment</li>
+                    <li>Conformation</li>
+                </ul>
+
+                <!-- fieldsets -->
+                <fieldset class="cart-tab">
+
+                    <div class="col-md-12 element-table">
+                        <div class="row">
+                            <table>
+                                <tr>
+                                    <th>Sản phẩm</th>
+                                    <th>Giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                                {% for item in cart %}
+                                <tr>
+                                    {% with product=item.product  %}
+                                    <td class="width">
+                                        <div class="image">
+                                            
+                                            
+                                                
+                                            <img src="{{product.thumb.url}}" alt="" class="img-responsive" width="100" height="100"/>
+                                            <p>{{ product.title}} </p>
+                                            
+                                            <h5>Điện thoại</h5>
+                                        </div>
+                                    </td>
+                                    <td class="cart-price">{{ product.get_price_vnd}}</td>
+                                    <td class="user">
+
+                                        <div id=field1 class="quantity">
+                                            <button type="button" id="sub" class=sub><i class="fa fa-minus"
+                                                    aria-hidden="true"></i></button>
+                                            <input type="text" id="1" value={{ item.quantity}} class=field>
+                                            <button type="button" id="add" class=add><i class="fa fa-plus"
+                                                    aria-hidden="true"></i></button>
+                                        </div>
+
+                                    </td>
+                                    <td>{{item.total_price_vnd}}</td>
+                                    <td><a href="{% url 'cart:remove-cart' product.slug %}"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a></td>
+                                    {% endwith %}
+                                </tr>
+                                {% empty %}
+                                    <td>Không có sản phẩm</td>
+                                {% endfor %}
+                                
+                            </table>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    {% with total_items=cart|length %}
+                    {% if cart|length > 0 %}
+                    <div class="shp-cart-btn">
+                        <a href="#" class="cart-btn">Clear shopping cart</a>
+                    </div>
+                    <div class="promo-input">
+                        <i class="flaticon-percentage"></i>
+                        <input type="text" placeholder="Mã giảm giá" />
+                        <a href="#" class="promo-i"><i class="flaticon-5-thin-right-arrow"></i></a>
+                    </div>
+                    <div class="pull-right">
+                        <a href="#" class="cart-btn upd-btn">Cập nhật giỏ hàng</a>
+                        <a href="#" class="shp-btn">Tiếp tục mua hàng</a>
+
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="col-md-6 shp-coupon pay-faq checkout">
+                        <!-- <h2>Estimate shipping and tax</h2>
+                        <p>Enter your destinations to get a shipping estimate</p>
+                        <select class="form-control">
+                            <option>Country</option>
+                            <option>India</option>
+                            <option>England</option>
+                            <option>China</option>
+                            <option>Sri Lanka</option>
+                        </select>
+                        <div class="state">
+                            <input class="code" type="text" placeholder="State/Province*">
+                            <input type="text" placeholder="Zip code*">
+                            <a href="#" class="shp-btn pull-right">Estimate</a>
+                        </div> -->
+                    </div>
+                    <div class="col-md-6 shp-checkout checkout pay-faq">
+                        <h2>Tổng giá tiền trong giỏ hàng</h2>
+                        <div class="element-table">
+                            <table class="text-uppercase">
+                                <tr>
+                                    <td><b>Subtotal</b></td>
+                                    <td class="text-right">{{ cart.get_total_price}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td><b>Phí vận chuyển</b></td>
+                                    <td class="shipping text-right text-capitalize">Miễn phí</td>
+                                </tr>
+                                <tr>
+                                        <td><b>Mã giảm giá</b></td>
+                                        <td class="shipping text-right text-capitalize">- 30,000 VNĐ</td>
+                                    </tr>
+                                <tr>
+                                    <td><b>Total</b></td>
+                                    <td class="total text-right">$9220.00</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <a href="javascript:void(0)" class="next shp-btn pull-right">Process to checkout</a>
+                    </div>
+                    {% endif%}
+                    {% endwith %}
+                    <div class="clearfix"></div>
+
+                </fieldset>
+
+                <fieldset class="delivery-tab">
+                    <div class="col-md-10 col-md-offset-1">
+
+
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#Free" class="cart-btn free-del"
+                                    aria-controls="Free" role="tab" data-toggle="tab">Free delivery</a></li>
+                            <li role="presentation"><a href="#Express" aria-controls="Express" class="cart-btn"
+                                    role="tab" data-toggle="tab">Express delivery 35$</a></li>
+                        </ul>
+
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="Free">
+                                <div class="form-sec">
+                                    <div class="row">
+                                        <div class="form-body col-sm-6">
+                                            <p>First Name *</p>
+                                            <input type="text" required placeholder="Enter your name" />
+                                        </div>
+                                        <div class="form-body col-sm-6">
+                                            <p>Last Name *</p>
+                                            <input type="text" required placeholder="Enter your last name" />
+                                        </div>
+                                        <div class="form-body col-sm-6">
+                                            <p>Email *</p>
+                                            <input type="email" required placeholder="grabyshop@gmail.com" />
+                                        </div>
+                                        <div class="form-body col-sm-6">
+                                            <p>Phone *</p>
+                                            <input type="text" required placeholder="9876543210" />
+                                        </div>
+                                        <div class="form-body col-sm-12">
+                                            <p>Address *</p>
+                                            <textarea required
+                                                placeholder="Street Address, Apartment, suite, unit etc. "></textarea>
+                                        </div>
+                                        <div class="form-body col-sm-12">
+                                            <p>City *</p>
+                                            <select>
+                                                <option>Zürich</option>
+                                                <option>Lorem</option>
+                                                <option>Ipsum</option>
+                                                <option>Dolor</option>
+                                                <option>Sit amet</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-body col-sm-6">
+                                            <p>Country *</p>
+                                            <select>
+                                                <option>switzerland</option>
+                                                <option>Lorem</option>
+                                                <option>Ipsum</option>
+                                                <option>Dolor</option>
+                                                <option>Sit amet</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-body col-sm-6">
+                                            <p>Zip code</p>
+                                            <input type="text" required />
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="Express">
+                                <div class="form-sec">
+                                    <div class="row">
+                                        <div class="form-body col-sm-6">
+                                            <p>First Name *</p>
+                                            <input type="text" required placeholder="Enter your name" />
+                                        </div>
+                                        <div class="form-body col-sm-6">
+                                            <p>Last Name *</p>
+                                            <input type="text" required placeholder="Enter your last name" />
+                                        </div>
+                                        <div class="form-body col-sm-6">
+                                            <p>Email *</p>
+                                            <input type="email" required placeholder="grabyshop@gmail.com" />
+                                        </div>
+                                        <div class="form-body col-sm-6">
+                                            <p>Phone *</p>
+                                            <input type="text" required placeholder="9876543210" />
+                                        </div>
+                                        <div class="form-body col-sm-12">
+                                            <p>Address *</p>
+                                            <textarea required
+                                                placeholder="Street Address, Apartment, suite, unit etc. "></textarea>
+                                        </div>
+                                        <div class="form-body col-sm-12">
+                                            <p>City *</p>
+                                            <select>
+                                                <option>Zürich</option>
+                                                <option>Lorem</option>
+                                                <option>Ipsum</option>
+                                                <option>Dolor</option>
+                                                <option>Sit amet</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-body col-sm-6">
+                                            <p>Country *</p>
+                                            <select>
+                                                <option>switzerland</option>
+                                                <option>Lorem</option>
+                                                <option>Ipsum</option>
+                                                <option>Dolor</option>
+                                                <option>Sit amet</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-body col-sm-6">
+                                            <p>Zip code</p>
+                                            <input type="text" required />
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0)" class="cart-btn previous"><i class="flaticon-2-left-arrow"></i>
+                            Back</a>
+                        <a href="javascript:void(0)" class="cart-btn next">Payment <i
+                                class="flaticon-5-thin-right-arrow"></i></a>
+                        <div class="clearfix"></div>
+
+                    </div>
+                </fieldset>
+
+                <fieldset class="payment-tab delivery-tab">
+                    <div class="col-md-10 col-md-offset-1">
+
+
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#visa" class="cart-btn" aria-controls="visa"
+                                    role="tab" data-toggle="tab"><img src="{% static "img/cart/payment-1.png"%}" alt=""
+                                        class="img-responsive" /></a></li>
+                            <li role="presentation"><a href="#Master-card" aria-controls="Master-card" class="cart-btn"
+                                    role="tab" data-toggle="tab"><img src="{% static "img/cart/payment-2.png"%}" alt=""
+                                        class="img-responsive" /></a></li>
+                            <li role="presentation"><a href="#Paypal" aria-controls="Paypal" class="cart-btn" role="tab"
+                                    data-toggle="tab"><img src="{% static "img/cart/payment-3.png"%}" alt=""
+                                        class="img-responsive" /></a></li>
+                        </ul>
+
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="visa">
+                                <div class="form-sec">
+                                    <div class="row">
+                                        <div class="form-body col-sm-6">
+                                            <p>Cardholder Name*</p>
+                                            <input type="text" required placeholder="Enter your cardholder name" />
+                                        </div>
+                                        <div class="form-body col-sm-6">
+                                            <p>Card Number *</p>
+                                            <input type="text" required placeholder="Enter your card number" />
+                                        </div>
+
+
+                                        <div class="col-md-8">
+                                            <p>End Date*</p>
+                                            <div class="form-body">
+
+                                                <select>
+                                                    <option>MM</option>
+                                                    <option>Jan</option>
+                                                    <option>Fab</option>
+                                                    <option>Mar</option>
+                                                    <option>Apr</option>
+                                                    <option>May</option>
+                                                    <option>June</option>
+                                                    <option>July</option>
+                                                    <option>Aug</option>
+                                                    <option>Sept</option>
+                                                    <option>Oct</option>
+                                                    <option>Nav</option>
+                                                    <option>Dec</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-body">
+                                                <select>
+                                                    <option>YYYY</option>
+                                                    <option>2010</option>
+                                                    <option>2011</option>
+                                                    <option>2012</option>
+                                                    <option>2013</option>
+                                                    <option>2014</option>
+                                                    <option>2015</option>
+                                                    <option>2016</option>
+                                                    <option>2017</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-body col-sm-4">
+                                            <p>CVV *</p>
+                                            <input type="text" required placeholder="Enter CVV code" />
+                                        </div>
+
+
+                                        <div class="clearfix"></div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane fade" id="Master-card">
+                                <div class="form-sec">
+                                    <div class="row">
+                                        <div class="form-body col-sm-6">
+                                            <p>Cardholder Name*</p>
+                                            <input type="text" required placeholder="Enter your cardholder name" />
+                                        </div>
+                                        <div class="form-body col-sm-6">
+                                            <p>Card Number *</p>
+                                            <input type="text" required placeholder="Enter your card number" />
+                                        </div>
+
+
+                                        <div class="col-md-8">
+                                            <p>End Date*</p>
+                                            <div class="form-body col-sm-6">
+
+                                                <select>
+                                                    <option>MM</option>
+                                                    <option>Jan</option>
+                                                    <option>Fab</option>
+                                                    <option>Mar</option>
+                                                    <option>Apr</option>
+                                                    <option>May</option>
+                                                    <option>June</option>
+                                                    <option>July</option>
+                                                    <option>Aug</option>
+                                                    <option>Sept</option>
+                                                    <option>Oct</option>
+                                                    <option>Nav</option>
+                                                    <option>Dec</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-body col-sm-6">
+                                                <select>
+                                                    <option>YYYY</option>
+                                                    <option>2010</option>
+                                                    <option>2011</option>
+                                                    <option>2012</option>
+                                                    <option>2013</option>
+                                                    <option>2014</option>
+                                                    <option>2015</option>
+                                                    <option>2016</option>
+                                                    <option>2017</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-body col-sm-4">
+                                            <p>CVV *</p>
+                                            <input type="text" required placeholder="Enter CVV code" />
+                                        </div>
+
+
+                                        <div class="clearfix"></div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane fade" id="Paypal">
+                                <div class="form-sec">
+                                    <div class="row">
+                                        <div class="form-body col-sm-6">
+                                            <p>Cardholder Name*</p>
+                                            <input type="text" required placeholder="Enter your cardholder name" />
+                                        </div>
+                                        <div class="form-body col-sm-6">
+                                            <p>Card Number *</p>
+                                            <input type="text" required placeholder="Enter your card number" />
+                                        </div>
+
+
+                                        <div class="col-md-8">
+                                            <p>End Date*</p>
+                                            <div class="form-body col-sm-6">
+
+                                                <select>
+                                                    <option>MM</option>
+                                                    <option>Jan</option>
+                                                    <option>Fab</option>
+                                                    <option>Mar</option>
+                                                    <option>Apr</option>
+                                                    <option>May</option>
+                                                    <option>June</option>
+                                                    <option>July</option>
+                                                    <option>Aug</option>
+                                                    <option>Sept</option>
+                                                    <option>Oct</option>
+                                                    <option>Nav</option>
+                                                    <option>Dec</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-body col-sm-6">
+                                                <select>
+                                                    <option>YYYY</option>
+                                                    <option>2010</option>
+                                                    <option>2011</option>
+                                                    <option>2012</option>
+                                                    <option>2013</option>
+                                                    <option>2014</option>
+                                                    <option>2015</option>
+                                                    <option>2016</option>
+                                                    <option>2017</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-body col-sm-4">
+                                            <p>CVV *</p>
+                                            <input type="text" required placeholder="Enter CVV code" />
+                                        </div>
+
+
+                                        <div class="clearfix"></div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0)" class="cart-btn previous"><i class="flaticon-2-left-arrow"></i>
+                            Back</a>
+                        <a href="javascript:void(0)" class="cart-btn next">Payment <i
+                                class="flaticon-5-thin-right-arrow"></i></a>
+                        <div class="clearfix"></div>
+
+                    </div>
+                </fieldset>
+
+                <fieldset class="confirmation-tab delivery-tab">
+                    <div class="col-md-12">
+                        <div class="dilivery-info">
+                            <h4>Delivery information</h4>
+                            <div class="express">
+                                <i class="flaticon-6-express"></i>
+                                <p>Express Delivery - <span>980.50$</span></p>
+                            </div>
+                            <div class="express">
+                                <i class="flaticon-placeholder-1"></i>
+                                <p>407/77 Donel Runn, Blueland NY 125 650.</p>
+                            </div>
+                            <div class="express">
+                                <i class="flaticon-phone-call"></i>
+                                <p>+01 9876543210</p>
+                            </div>
+
+                            <div class="express deli-pay">
+                                <h4>Payment</h4>
+                                <i class="flaticon-6-money"></i>
+                                <p>Visa xxxx xxxx xxxx 3526</p>
+                            </div>
+                        </div>
+
+                        <div class="delivery-cart dilivery-info">
+                            <h4>CART</h4>
+                            <div class="cart-detail">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td class="order">
+                                                <img src="{% static "img/cart/cart-1.jpg"%}" alt=""
+                                                    class="img-responsive cart-img" />
+                                                <div class="order-detail">
+                                                    <p>Apple Watch Series 1 - 38 mm Silver Aluminium White Sport Band
+                                                    </p>
+                                                    <span>5 - White - 1 pcs </span>
+                                                </div>
+                                            </td>
+                                            <td class="order-price">
+                                                <h5>670.50$</h5>
+                                                <h6>$950.20</h6>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="order order-head">
+                                                <img src="{% static "img/cart/cart-2.jpg"%}" alt=""
+                                                    class="img-responsive cart-img" />
+                                                <div class="order-detail">
+                                                    <p>BEATS EP ON-EAR HEADPHONE </p>
+                                                    <span>5 - Gold - 2 pcs </span>
+                                                </div>
+                                            </td>
+                                            <td class="order-price">
+                                                <h5>540.00$</h5>
+                                                <h6>$820.20</h6>
+                                            </td>
+                                        </tr>
+
+                                        <tr class="total-price">
+                                            <td class="order">
+                                                <h2>TOTAL</h2>
+                                            </td>
+                                            <td class="order-price">
+                                                <h3>5540.00$</h3>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <a href="javascript:void(0)" class="cart-btn previous"><i class="flaticon-2-left-arrow"></i>
+                            Back</a>
+                        <a href="javascript:void(0)" class="next cart-btn shp-btn pull-right">Confirm Order</a>
+                    </div>
+                </fieldset>
+
+                <fieldset class="confirmation-tab delivery-tab">
+                    <div class="col-md-12 success-order">
+                        <div class="col-md-6 col-md-offset-3">
+                            <img src="{% static "img/cart/success.png"%}" alt="" class="img-responsive" />
+                            <h4>Congratulation. Your order is accepted Successfully</h4>
+                            <p>Let me be clear. Not even close. We did not go by choise. We went because of necessity.
+                            </p>
+                            <a href="javascript:void(0)" class="next shp-btn">Track order</a>
+                        </div>
+                    </div>
+                </fieldset>
+
+
+
+            </div>
+
+        </div>
+
+        <!--footer-->
+        {% include './layouts/footer.html' %}
+
+    </div>
+    <!--/shp-cart-->
+
+    <!--js-->
+    <script src="{% static "js/ajax.js"%}"></script>
+    <script src="{% static "js/jquery-ui.min.js"%}"></script>
+    <script src="{% static "js/bootstrap.min.js"%}"></script>
+    <!--Quantity-box-->
+    <script>
+        var unit = 0;
+        var total;
+        // if user changes value in field
+        $('.field').change(function () {
+            unit = this.value;
+        });
+        $('.add').click(function () {
+
+
+            var $input = $(this).prevUntil('.sub');
+            var count = $input.val();
+            count++;
+            $input.val(count);
+
+        });
+        $('.sub').click(function () {
+
+            var $input = $(this).nextUntil('.add');
+            var count = $input.val();
+            if (count > 0) {
+                count--;
+                $input.val(count);
+            }
+        });
+    </script>
+    <!--Form-step-->
+    <script src="{% static "js/form-step.js"%}"></script>
+    <!--custom-->
+    <script src="{% static "js/custom.js"%}"></script>
+    <script language=JavaScript>
+        $(document).on("contextmenu", function (e) {
+            e.preventDefault();
+        });
+    </script>
+</body>
+
+<!-- Mirrored from theme.innovatory.in/Graby-shop/cart-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Nov 2019 15:12:30 GMT -->
+
+</html>

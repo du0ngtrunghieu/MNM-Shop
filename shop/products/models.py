@@ -26,7 +26,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     available = models.BooleanField(default=True)
-    
+    thumb = FileBrowseField("Image", max_length=5000, directory="products/", extensions=[".jpg",".jpeg",".png"], blank=True)
     
     class Meta:
             
@@ -45,6 +45,7 @@ class Product(models.Model):
         return reverse("product:detail-products", kwargs={"slug": self.slug})
     def get_price_vnd(self):
         return '{:,} VNĐ'.format(self.price)
+    
 
 class Feature(models.Model):
     title = models.CharField('Tên ',max_length=200)
