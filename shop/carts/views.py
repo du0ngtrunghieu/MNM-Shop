@@ -2,7 +2,8 @@ from django.shortcuts import render,get_object_or_404,redirect
 from django.views.decorators.http import require_POST
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from products.models import Product
 from .cart import Cart
 from .models import Coupon
@@ -15,6 +16,11 @@ def cart_remove(request, slug):
     cart = Cart(request)
     product = get_object_or_404(Product, slug=slug)
     cart.remove(product=product)
+    return redirect('cart:detail-cart')
+def cart_remove_all(request):
+    cart = Cart(request)
+    cart.removeAll()
+    messages.success(request, f"Đã xoá tất cả sản phẩm trong giỏ hàng")
     return redirect('cart:detail-cart')
 # Create your views here.
 def CartListPage(request):
@@ -43,6 +49,21 @@ def coupon_remove(request,slug):
         
         if int(coupon_id) == int(request.session.get('coupon_id')):
            
-            del request.session['coupon_id']      
+            del request.session['coupon_id']   
+            messages.info(request, f'Đã xoá mã giảm giá')      
             return redirect('cart:detail-cart')
     return redirect('cart:detail-cart')
+
+@require_POST
+@csrf_exempt
+def cart_update(request,slug,quantity):
+    
+    cart = Cart(request)
+    product = get_object_or_404(Product, slug=slug)
+    if quantity ==0:
+        cart.remove(product=product)
+    else:
+        cart.add(product=product, quantity=quantity,update_quantity=True)
+    messages.info(request, f'Cập nhật giỏ hàng thành công')       
+    return JsonResponse({'status': 'true'})
+    

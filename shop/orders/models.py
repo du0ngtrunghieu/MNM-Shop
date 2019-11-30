@@ -2,6 +2,7 @@ from django.db import models
 from products.models import Product
 from carts.models import Coupon
 class Order(models.Model):
+    
     first_name = models.CharField(max_length=60)
     last_name = models.CharField(max_length=60)
     email = models.EmailField()

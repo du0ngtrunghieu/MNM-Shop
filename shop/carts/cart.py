@@ -5,7 +5,6 @@ from .models import Coupon
 
 
 class Cart(object):
-
     def __init__(self,request):
         self.session = request.session
         cart = self.session.get(settings.CART_SESSION_ID)
@@ -30,6 +29,10 @@ class Cart(object):
         if product_id in self.cart:
             del self.cart[product_id]
             self.save()
+    def removeAll(self):
+        cart = self.session[settings.CART_SESSION_ID] = {}
+        self.cart = cart
+        self.save()
     def save(self):
         self.session[settings.CART_SESSION_ID] = self.cart
         self.session.modified = True
