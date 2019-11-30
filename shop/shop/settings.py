@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'products',
     'categories',
     'carts',
+    'orders',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',

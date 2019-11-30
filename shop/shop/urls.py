@@ -18,6 +18,7 @@ from django.urls import path,include
 from filebrowser.sites import site
 from django.conf import settings
 from django.conf.urls.static import static
+
 site.directory = "uploads/"
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -1,17 +1,16 @@
 from django.db import models
-from shop.products.models import Product
-
+from products.models import Product
+from carts.models import Coupon
 class Order(models.Model):
     first_name = models.CharField(max_length=60)
     last_name = models.CharField(max_length=60)
     email = models.EmailField()
     address = models.CharField(max_length=150)
-    postal_code = models.CharField(max_length=30)
     city = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField("Đã thanh toán",default=False)
-    promo = models.ForeignKey("Coupon", on_delete=models.CASCADE,blank=True,null=True)
+    promo = models.ForeignKey(Coupon, on_delete=models.CASCADE,blank=True,null=True)
     class Meta:
         ordering = ('-created', )
 
@@ -19,7 +18,7 @@ class Order(models.Model):
         return 'Order {}'.format(self.id)
 
     def get_total_cost(self):
-        return sum(item.get_cost() for item in self.items.all())
+        return sum(item.get_cost() for item in self.items.all()) - self.promo.amount
 
 
 class OrderItem(models.Model):
@@ -33,9 +32,3 @@ class OrderItem(models.Model):
 
     def get_cost(self):
         return self.price * self.quantity
-
-class Coupon(models.Model):
-    code = models.CharField("Mã giảm giá", max_length=50)
-    amount = models.BigIntegerField("Số tiền giảm giá")
-    def __str__(self):
-        return '{}'.format(self.code)

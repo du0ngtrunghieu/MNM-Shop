@@ -47,15 +47,22 @@
 
         <!--main-sec-->
         <div class="container cart-sec padd-80">
-
+            
             <div id="msform">
-
+                {% if messages %}
+                    {% for message in messages %}
+                     <div class="alert alert-{{ message.tags }}" role="alert">
+                            {{ message }}
+                      </div>
+                      {% endfor %}
+                   
+                {% endif %}
                 <!-- progressbar -->
                 <ul id="progressbar">
-                    <li class="active">Cart</li>
-                    <li>Delivery</li>
-                    <li>Payment</li>
-                    <li>Conformation</li>
+                    <li class="active">Giỏ hàng</li>
+                    <li>Vận chuyển</li>
+                    <li>Thanh Toán</li>
+                    <li>Xác Nhận</li>
                 </ul>
 
                 <!-- fieldsets -->
@@ -68,7 +75,7 @@
                                     <th>Sản phẩm</th>
                                     <th>Giá</th>
                                     <th>Số lượng</th>
-                                    <th>Total</th>
+                                    <th>Tổng tiền</th>
                                     <th></th>
                                 </tr>
                                 {% for item in cart %}
@@ -114,11 +121,19 @@
                     <div class="shp-cart-btn">
                         <a href="#" class="cart-btn">Clear shopping cart</a>
                     </div>
-                    <div class="promo-input">
-                        <i class="flaticon-percentage"></i>
-                        <input type="text" placeholder="Mã giảm giá" />
-                        <a href="#" class="promo-i"><i class="flaticon-5-thin-right-arrow"></i></a>
-                    </div>
+                    
+                    {% if cart.coupon.amount is None %}
+                        <div class="promo-input">
+                            <form id="magiamgia" method="POST" action="{% url 'cart:check-coupon' %}">
+                                <i class="flaticon-percentage"></i>
+                                {% csrf_token %} 
+                                <input type="text" name="code" placeholder="Mã giảm giá" />
+                                <a href="javascript:{}" onclick="document.getElementById('magiamgia').submit();" class="promo-i"><i class="flaticon-5-thin-right-arrow" ></i></a>
+                            </form>
+                        </div>
+                    {% endif %}
+                        
+                    
                     <div class="pull-right">
                         <a href="#" class="cart-btn upd-btn">Cập nhật giỏ hàng</a>
                         <a href="#" class="shp-btn">Tiếp tục mua hàng</a>
@@ -155,13 +170,31 @@
                                     <td><b>Phí vận chuyển</b></td>
                                     <td class="shipping text-right text-capitalize">Miễn phí</td>
                                 </tr>
-                                <tr>
+                                
+                                
+                                
+                                    
+                               
+                                  
+                                  {% if cart.coupon.amount %}
+                                 
+                                  <tr>
                                         <td><b>Mã giảm giá</b></td>
-                                        <td class="shipping text-right text-capitalize">- 30,000 VNĐ</td>
+                                        <td class="shipping text-right text-capitalize">- {{ cart.amount_coupon_vnd}}</td>
+                                        <td><a href="{% url 'cart:remove-coupon' cart.coupon.code %}">&nbsp<i class="fa fa-times-circle-o" aria-hidden="true"></i></a></td>
                                     </tr>
-                                <tr>
-                                    <td><b>Total</b></td>
-                                    <td class="total text-right">$9220.00</td>
+                                  <tr>
+                                  {% endif %}
+                                      
+                                
+                                
+                                
+                                    
+                                
+                                    
+                                    <td><b>Tổng tiền :</b></td>
+                                    <td class="total text-right">{{ cart.get_total_price_after_discount_vnd}}</td>
+                                    
                                 </tr>
                             </table>
                         </div>
