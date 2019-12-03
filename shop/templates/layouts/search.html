@@ -4,9 +4,9 @@
             <a href="index.html"><img src="{% static 'img/index/logo.png'%}" alt="" class="img-responsive" /></a>
         </div>
         <div class="col-md-6 search">
-            <input type="text" name="search" placeholder="Search by product name" />
+            <input type="text" name="search" placeholder="Tìm kiếm..." />
             <select>
-                <option>All Categories</option>
+                <option>Tất cả thể loại</option>
                 <option>Men</option>
                 <option>Women</option>
                 <option>Electronics</option>
@@ -16,32 +16,53 @@
         </div>
         <div class="col-md-3 shopping-cart">
             <div class="icon-round">	
-            <a href="#"><i class="flaticon-refresh"></i></a>
-            <a href="#"><i class="flaticon-heart"></i></a>
+            
                 <div class="cart-item">
-                    <div class="cart-mail"><a href="#"><i class="flaticon-shopping-cart"></i><span>2</span></a></div>
-                    <p><a href="#">My cart<span>$950.80</span></a></p>						
+                    <div class="cart-mail">
+                        <a href="{% url 'cart:detail-cart' %}"><i class="flaticon-shopping-cart"></i>
+                        
+                        {% if cart|length > 0 %}
+                        <span>{{ cart|length }}</span>
+                        {% endif%}
+                        
+                        </a>
+
+                    </div>
+                    <p><a href="{% url 'cart:detail-cart' %}">Giỏ hàng<span>{{ cart.get_total_price_vnd}}</span></a></p>						
                                 
                                 <div class="cart-item-hover">
+                                    
+                                    {% for item in cart %}
+                                    {% with product=item.product  %}
+                                    
+                                    {% if product %}
+                                        
+                                    
+                                        
                                     <div class="cart-item-list">
-                                        <img src="{% static 'img/index/cart-item-1.jpg'%}" alt="" />
-                                        <a href="#"><h3>Beats Classic Headphone</h3></a>
-                                        <b><a href="#">X</a></b>
-                                        <p>$88.00 <del>$120.00</del></p>
-                                    </div>
-                                    <div class="cart-item-list">
-                                        <img src="{% static 'img/index/cart-item-2.jpg'%}" alt="" />
-                                        <a href="#"><h3>Samsung Classic Tablet</h3></a>
-                                        <b><a href="#">X</a></b>
-                                        <p>$90.00 <del>$122.00</del></p>
-                                    </div>
+                                            <img src="{{ product.thumb.url}}" alt="" width="60" height="60"/>
+                                            <a href="{{ product.get_absolute_url }}"><h3>{{ product.title}}  x{{ item.quantity}}</h3></a>
+                                            <b><a href="{% url 'cart:remove-cart' product.slug %}">x</a></b>
+                                            <p>{{ product.get_price_discount_vnd}}
+                                                {% if product.discount_price %}
+                                                    <del>{{ product.get_price_vnd }}</del>
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                        {% endif %}
+                                        {% endwith %}
+                                        {% empty %}
+                                        <p>Không có sản phẩm nào</p>
+                                    {% endfor %}
                                     <div class="border"></div>
                                     <div class="cart-total">
-                                        <h6>Total Price</h6> <p>$178.00</p><div class="clearfix"></div>
-                                        <a href="#" class="cart-view">View all</a>
-                                        <a href="check-out.html" class="cart-checkout">Check out</a>
+                                        <h6>Tổng tiền :</h6> <p>{{ cart.get_total_price_vnd}}</p><div class="clearfix"></div>
+                                        <a href="{% url 'cart:detail-cart' %}" class="cart-view">Xem Chi Tiết</a>
+                                        
                                     </div>
+                                    
                                 </div>
+
                                 
                 </div>
             </div>

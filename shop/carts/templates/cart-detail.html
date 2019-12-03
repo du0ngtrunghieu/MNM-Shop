@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>cart</title>
+    <title>Giỏ hàng</title>
     <link rel="icon" href="{% static "img/index/favicon.png"%}" sizes="16x16">
     <!--css-->
     <link href="{% static "css/style.css"%}" rel="stylesheet" type="text/css">
@@ -83,16 +83,16 @@
                                     {% with product=item.product  %}
                                     <td class="width">
                                         <div class="image">
-                                            
-                                            
-                                                
                                             <img src="{{product.thumb.url}}" alt="" class="img-responsive" width="100" height="100"/>
-                                            <p>{{ product.title}} </p>
+                                            <p>{{ product.title}}</p>
                                             
-                                            <h5>Điện thoại</h5>
+                                            <h5>{{ product.categories }}</h5>
                                         </div>
                                     </td>
-                                    <td class="cart-price">{{ product.get_price_vnd}}</td>
+                                    <td class="cart-price">{{ product.get_price_discount_vnd}} 
+                                    {% if product.discount_price %}
+                                        <del>{{ product.get_price_vnd }}</del>
+                                    {% endif %}</td>
                                     <td class="user">
 
                                         <div id=field1 class="quantity">
@@ -138,7 +138,7 @@
                     
                     <div class="pull-right">
                         <button id="update-cart" class="cart-btn upd-btn">Cập nhật giỏ hàng</button>
-                        <a href="#" class="shp-btn">Tiếp tục mua hàng</a>
+                        <a href="{% url 'product:list-products' %}" class="shp-btn">Tiếp tục mua hàng</a>
 
                     </div>
                     <div class="clearfix"></div>
@@ -165,7 +165,7 @@
                             <table class="text-uppercase">
                                 <tr>
                                     <td><b>Subtotal</b></td>
-                                    <td class="text-right">{{ cart.get_total_price}}</td>
+                                    <td class="text-right">{{ cart.get_total_price_vnd}}</td>
                                 </tr>
 
                                 <tr>
@@ -599,6 +599,14 @@
             e.preventDefault();
         });
     </script>
+    {% if messages %}
+        <script>
+                $([document.documentElement, document.body]).animate({
+                    scrollTop: $("#msform").offset().top
+                }, 200);
+        </script>
+       
+    {% endif %}
 </body>
 
 <!-- Mirrored from theme.innovatory.in/Graby-shop/cart-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Nov 2019 15:12:30 GMT -->
@@ -606,6 +614,9 @@
 </html>
 
 <script>
+    
+    
+        
     $('#update-cart').click(function () {
         
         $(".user #field1").each(function(){

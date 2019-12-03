@@ -1,12 +1,15 @@
 @charset "utf-8";
 /* CSS Document */
-
+a.page-link.Disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+}
 body{
 	font-family: 'Roboto';
-	font-size:18px;
+	font-size:14px;
 	color:#5d5d5d;
 	overflow-x:hidden;
-	font-weight:400;
+	font-weight:250;
 }
 .padd-60{
 	padding:60px 0;

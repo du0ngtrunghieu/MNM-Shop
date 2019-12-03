@@ -1,0 +1,1003 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="en">
+<!-- Mirrored from theme.innovatory.in/Graby-shop/product-grid.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 29 Nov 2019 15:59:55 GMT -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Danh sách các sản phẩm</title>
+    <link rel="icon" href="{% static 'img/index/favicon.png'%}" sizes="16x16">
+    <!--css-->
+    <link href="{% static 'css/style.css'%}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/range-select.css'%}" rel="stylesheet" type="text/css">
+    <!--BOOTSTRAP-->
+    <link href="{% static 'css/bootstrap.css'%}" rel="stylesheet" type="text/css">
+    <!--fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap&subset=vietnamese" rel="stylesheet">
+    <link href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css'%}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fonts/font/flaticon.css'%}" rel="stylesheet" type="text/css">
+    <!--range-slider-->
+    <link href="{% static 'css/range-slider.css'%}" rel="stylesheet" type="text/css">
+    <!--slider-->
+    <link href="{% static 'css/owl.carousel.min.css'%}" rel="stylesheet">
+    <link href="{% static 'css/theme.css'%}" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="grid-page">
+        <!--page wrap-->
+
+        <a href="javascript:" id="return-to-top"><i class="fa fa-angle-up"></i></a>
+
+        <!--header-->
+        {% include './layouts/header.html' %}
+
+        <!--search-->
+        {% include './layouts/search.html' %}
+
+        <!--menu-->
+        {% include './layouts/menu.html' %}
+
+        <!--Header-->
+        <div class="container-fluid header-main">
+            <div class="container text-center">
+
+                <h2>Danh Sách Các Sản Phẩm</h2>
+                <div class="link-sec">
+                    <a href="#">Home</a> <i class="fa fa-angle-right"></i> <a href="#">Các Sản Phẩm</a>
+                </div>
+
+            </div>
+        </div>
+
+        <!--special-offer-->
+        <div class="container padd-60 special-offer">
+
+            <div class="col-md-9 grid-list col-md-push-3">
+                <div class="product-top-bar">
+                    <ul>
+                        
+                        <li><a href="#"><span>Sắp xếp theo</span></a></li>
+                        <li><a href="#">Giá</a></li>
+                        <li><a href="#">Tên</a></li>
+                        <li><a href="#">Ngày</a></li>
+
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+                {% for a in all_product %}
+                <div class="col-md-4 col-sm-4 mt-30">
+                    <div class="product">
+                        <div class="product-img">
+                            <a href="{{ a.get_absolute_url }}" class="product-href"></a>
+                            <img src="{{ a.thumb.url}}" alt="" class="img-responsive img-overlay" width="200"/>
+
+                            {% for b in a.images.all %}
+                                {% if forloop.first %}
+                                    <img src="{{ b.thumbnail.url }}" alt="" class="img-responsive" width="200" />                 
+                                {% endif %}
+                            {% endfor %}
+                            
+                            <div class="offer-discount new">{{ a.label}}</div>
+                            
+                            {% if a.discount_price %}
+                                <div class="offer-discount">- {{ a.discount_price}}%</div>
+                            {% endif %}
+                                
+                            <div class="sale-heart-hover"><a href="#"><i class="flaticon-heart"></i></a></div>
+                        </div>
+                        <div class="product-body">
+                            <p><a href="{{ a.get_absolute_url }}">{{ a.title }}</a></p>
+                            <h4>{{ a.get_price_discount_vnd }}</h4>
+                            <div class="product-hover">
+                                <div class="add-cart-hover"><a href="{% url 'cart:add-cart' a.slug %}"><h6>Thêm vào giỏ</h6><i class="flaticon-3-signs" aria-hidden="true"></i></a></div>
+                                <div class="quick-view"><a href="#" data-toggle="modal" data-target="#quick-modal-{{ a.id}}"><i class="fa fa-search-plus" aria-hidden="true"></i></a></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                            {% empty %}
+                            <p>Không có sản phẩm nào</p>
+                {% endfor %}
+                
+
+                <div class="clearfix"></div>
+
+                <div class="page-row">
+                    
+                    <ul class="pagination">
+                            {% if all_product.has_previous %}
+                            <li class="page-item">
+                                    <a class="page-link" aria-label="Previous" href="?page={{ all_product.previous_page_number }}">
+                                        <span aria-hidden="true">&laquo; Trước</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item">
+                                <a class="page-link Disabled" aria-label="Previous" href="">
+                                    <span aria-hidden="true">&laquo; Trước</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            
+                              {% endif %}
+                        
+                        {% for num in all_product.paginator.page_range %}
+
+                            {% if all_product.number == num %}
+                                <li class="page-item active"><a class="page-link">{{ num }}</a></li>
+                            {% elif num > all_product.number|add:'-3' and num < all_product.number|add:'3' %}
+                                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                                
+                            {% endif %}
+
+                        {% endfor %}
+                        {% if all_product.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" aria-label="Next" href="?page={{ all_product.next_page_number }}">
+                                <span aria-hidden="true">Sau &raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="page-item">
+                            <a class="page-link Disabled" aria-label="Next" href="">
+                                <span aria-hidden="true">Sau &raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+
+            <div class="col-md-3 col-md-pull-9 main-side-bar">
+
+                <ul>
+                    <li class="sub-menu"><a class="main-a" href="javascript:void(0)">Loại sản phẩm <div class="icon-plus"><i class='fa flaticon-3-signs'></i></div></a>
+
+                        <ul>
+                            
+                            {% for b in categories_count.all %}
+                                
+                            <li><a href="{{b.slug}}">{{ b.nameCat}}<span>({{ b.count}})</span></a></li>
+                            {% endfor %}
+                                
+                        </ul>
+
+                    </li>
+                </ul>
+
+                <ul>
+                    <li class="sub-menu"><a class="main-a" href="javascript:void(0)">Filter by price <div class="icon-plus"><i class='fa flaticon-3-signs'></i></div></a>
+
+                        <ul>
+                            <div class="price-range">
+                                <div id="slider-range"></div>
+                                <div class="clearfix"></div>
+                                <div class="range-text">
+                                    <h3>Price: <span>$1100 to $1850</span></h3>
+                                    <button class="btn-custom">Filter</button>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <!--
+					-->
+                        </ul>
+
+                    </li>
+                </ul>
+
+                <ul class="shop-size">
+                    <li class="sub-menu"><a class="main-a" href="javascript:void(0)">Brands <div class="icon-plus"><i class='fa flaticon-3-signs'></i></div></a>
+
+                        <ul>
+                            <li>
+                                <input type="checkbox" id="ap" />
+                                <label for="ap"> Apple <span>(8)</span></label>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="de" />
+                                <label for="de"> Dell <span>(15)</span></label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="le" />
+                                <label for="le"> Lenovo<span>(3)</span></label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="pa" />
+                                <label for="pa"> Panasonic<span>(3)</span></label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="no" />
+                                <label for="no"> Nokia <span>(15)</span></label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="sa" />
+                                <label for="sa"> Samsung<span>(3)</span></label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="zi" />
+                                <label for="zi"> Ziox<span>(3)</span></label>
+                            </li>
+                        </ul>
+
+                    </li>
+                </ul>
+
+                <ul class="shop-size">
+                    <li class="sub-menu"><a class="main-a" href="javascript:void(0)">Shop by color <div class="icon-plus"><i class='fa flaticon-3-signs'></i></div></a>
+
+                        <ul>
+                            <li>
+                                <input type="checkbox" id="br" />
+                                <label for="br"> Brown <span>(8)</span></label>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="wh" />
+                                <label for="wh"> White <span>(15)</span></label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="bl" />
+                                <label for="bl"> Black<span>(3)</span></label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="blu" />
+                                <label for="blu"> Blue<span>(3)</span></label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="ro" />
+                                <label for="ro"> Rosegold <span>(15)</span></label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="si" />
+                                <label for="si"> Silver<span>(3)</span></label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="pi" />
+                                <label for="pi"> Pink<span>(3)</span></label>
+                            </li>
+                        </ul>
+
+                    </li>
+                </ul>
+
+                <ul class="shop-size">
+                    <li class="sub-menu"><a class="main-a" href="javascript:void(0)">Shop by Size <div class="icon-plus"><i class='fa flaticon-3-signs'></i></div></a>
+
+                        <ul>
+                            <li>
+                                <input type="checkbox" id="s" />
+                                <label for="s">S <span>(8)</span></label>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="m" />
+                                <label for="m"> M <span>(15)</span></label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="l" />
+                                <label for="l"> L<span>(3)</span></label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="xl" />
+                                <label for="xl"> XL<span>(3)</span></label>
+                            </li>
+                            <li>
+                                <input id="xxl" type="checkbox" />
+                                <label for="xxl">XXL<span>(15)</span></label>
+                            </li>
+                        </ul>
+
+                    </li>
+                </ul>
+
+                <ul>
+                    <li class="sub-menu"><a class="main-a" href="javascript:void(0)">Latest products <div class="icon-plus"><i class='fa flaticon-3-signs'></i></div></a>
+
+                        <ul>
+                            <li class="new-list">
+                                <img src="{% static 'img/grid/new-1.jpg'%}" class="img-responsive" alt="" />
+                                <h2>iPhone 6s rose gold 126GB</h2>
+                                <h3>895.50$ <span>$920.20</span></h3>
+                            </li>
+                            <li class="new-list">
+                                <img src="{% static 'img/grid/new-2.jpg'%}" class="img-responsive" alt="" />
+                                <h2>SAMSUNG RFG23UERS Classic Style</h2>
+                                <h3>895.50$ <span>$920.20</span></h3>
+                            </li>
+                            <li class="new-list">
+                                <img src="{% static 'img/grid/new-3.jpg'%}" class="img-responsive" alt="" />
+                                <h2>PQi iConnect USB OTG iPhone/iPad USB</h2>
+                                <h3>895.50$ <span>$920.20</span></h3>
+                            </li>
+                        </ul>
+
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="clearfix"></div>
+
+        </div>
+
+        <!--top-rated-product-->
+        <div class="container top-rated">
+
+            <div class="col-md-4 col-sm-6 top-rated-product pt-60">
+                <h3><a href="#">Featured Product</a></h3>
+                <span></span>
+                <div class="tranding">
+                    <div class="owl-carousel special-offer" id="topproduct">
+
+                        <div class="thumbnail no-border no-padding">
+                            <div class="popular-product col-xs-12 sale col-md-12">
+                                <a href="#"><img src="{% static 'img/product/top_product_phone.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">iPhone 6s rose gold 126GB</a></h2>
+                                <h4>750.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="popular-product col-xs-12 sale col-md-12">
+                                <a href="#"><img src="{% static 'img/product/watch.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">iWatch Apple</a></h2>
+                                <h4>700.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="popular-product col-xs-12 col-md-12 sale connect">
+                                <a href="#"><img src="{% static 'img/product/otg.jpg'%}" alt="" class="img-responsive"></a>
+                                <h2><a href="#">PQi iConnect USB OTG </a></h2>
+                                <h4>700.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="thumbnail no-border no-padding">
+                            <div class="popular-product col-xs-12 col-md-12 sale">
+                                <a href="#"><img src="{% static 'img/product/top_product_fridge.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">SAMSUNG RFG23UERS</a> </h2>
+                                <h4>750.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="popular-product col-xs-12 col-md-12 sale">
+                                <a href="#"><img src="{% static 'img/product/top_product_laptop.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">HP Stream 14" Laptop</a></h2>
+                                <h4>650.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="popular-product col-xs-12 col-md-12 sale connect">
+                                <a href="#"><img src="{% static 'img/product/top_product_speaker.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">Home Theater System</a></h2>
+                                <h4>570.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="thumbnail no-border no-padding">
+                            <div class="popular-product col-xs-12 col-md-12 sale">
+                                <a href="#"><img src="{% static 'img/product/top_product_camera.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">OLYMPUS Stylus TG-5</a> </h2>
+                                <h4>755.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="popular-product col-xs-12 col-md-12 sale">
+                                <a href="#"><img src="{% static 'img/product/top_product_cell-phone.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">Samsung Galaxy S8</a> </h2>
+                                <h4>580.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="popular-product col-xs-12 col-md-12 sale connect">
+                                <a href="#"><img src="{% static 'img/product/top_product_tv.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">Sony KDL43W7 43"(108cm)</a></h2>
+                                <h4>540.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class=" clearfix"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6 top-rated-product pt-60">
+                <h3><a href="#">Top Rated</a></h3>
+                <span></span>
+                <div class="tranding">
+                    <div class="owl-carousel special-offer" id="featureproduct">
+
+                        <div class="thumbnail no-border no-padding">
+
+                            <div class="popular-product col-xs-12 col-md-12 sale">
+                                <a href="#"><img src="{% static 'img/product/top_product_fridge.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">SAMSUNG RFG23UERS</a> </h2>
+                                <h4>750.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="popular-product col-xs-12 col-md-12 sale">
+                                <a href="#"><img src="{% static 'img/product/top_product_laptop.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">HP Stream 14" Laptop</a></h2>
+                                <h4>650.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="popular-product col-xs-12 col-md-12 sale connect">
+                                <a href="#"><img src="{% static 'img/product/top_product_speaker.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">Home Theater System</a></h2>
+                                <h4>570.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="thumbnail no-border no-padding">
+
+                            <div class="popular-product col-xs-12 sale col-md-12">
+                                <a href="#"><img src="{% static 'img/product/top_product_phone.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">iPhone 6s rose gold 126GB</a></h2>
+                                <h4>750.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="popular-product col-xs-12 sale col-md-12">
+                                <a href="#"><img src="{% static 'img/product/watch.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">iWatch Apple</a></h2>
+                                <h4>700.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="popular-product col-xs-12 col-md-12 sale connect">
+                                <a href="#"><img src="{% static 'img/product/otg.jpg'%}" alt="" class="img-responsive"></a>
+                                <h2><a href="#">PQi iConnect USB OTG </a></h2>
+                                <h4>700.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="thumbnail no-border no-padding">
+                            <div class="popular-product col-xs-12 col-md-12 sale">
+                                <a href="#"><img src="{% static 'img/product/top_product_camera.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">OLYMPUS Stylus TG-5</a> </h2>
+                                <h4>755.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="popular-product col-xs-12 col-md-12 sale">
+                                <a href="#"><img src="{% static 'img/product/top_product_cell-phone.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">Samsung Galaxy S8</a> </h2>
+                                <h4>580.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="popular-product col-xs-12 col-md-12 sale connect">
+                                <a href="#"><img src="{% static 'img/product/top_product_tv.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">Sony KDL43W7 43"(108cm)</a></h2>
+                                <h4>540.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class=" clearfix"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-offset-0 col-md-4  top-rated-product pt-60 pb-60">
+                <h3><a href="#">Popular Products</a></h3>
+                <span></span>
+                <div class="tranding">
+                    <div class="owl-carousel special-offer" id="popularproduct">
+
+                        <div class="thumbnail no-border no-padding">
+                            <div class="popular-product col-xs-12 col-md-12 sale">
+                                <a href="#"><img src="{% static 'img/product/top_product_camera.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">OLYMPUS Stylus TG-5</a> </h2>
+                                <h4>755.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="popular-product col-xs-12 col-md-12 sale">
+                                <a href="#"><img src="{% static 'img/product/top_product_cell-phone.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">Samsung Galaxy S8</a> </h2>
+                                <h4>580.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="popular-product col-xs-12 col-md-12 sale connect">
+                                <a href="#"><img src="{% static 'img/product/top_product_tv.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">Sony KDL43W7 43"(108cm)</a></h2>
+                                <h4>540.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class=" clearfix"></div>
+                        </div>
+
+                        <div class="thumbnail no-border no-padding">
+
+                            <div class="popular-product col-xs-12 col-md-12 sale">
+                                <a href="#"><img src="{% static 'img/product/top_product_fridge.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">SAMSUNG RFG23UERS</a> </h2>
+                                <h4>750.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="popular-product col-xs-12 col-md-12 sale">
+                                <a href="#"><img src="{% static 'img/product/top_product_laptop.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">HP Stream 14" Laptop</a></h2>
+                                <h4>650.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="popular-product col-xs-12 col-md-12 sale connect">
+                                <a href="#"><img src="{% static 'img/product/top_product_speaker.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">Home Theater System</a></h2>
+                                <h4>570.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="thumbnail no-border no-padding">
+
+                            <div class="popular-product col-xs-12 sale col-md-12">
+                                <a href="#"><img src="{% static 'img/inner-page/top_product_phone.html'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">iPhone 6s rose gold 126GB</a></h2>
+                                <h4>750.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="popular-product col-xs-12 sale col-md-12">
+                                <a href="#"><img src="{% static 'img/product/watch.jpg'%}" alt="" class="img-responsive" /></a>
+                                <h2><a href="#">iWatch Apple</a></h2>
+                                <h4>700.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="popular-product col-xs-12 col-md-12 sale connect">
+                                <a href="#"><img src="{% static 'img/product/otg.jpg'%}" alt="" class="img-responsive"></a>
+                                <h2><a href="#">PQi iConnect USB OTG </a></h2>
+                                <h4>700.50$</h4>
+
+                                <div class="hover-product">
+                                    <div class="hover-product-body">
+                                        <div class="hover-icon heart"><a href="#"><i class="flaticon-heart"></i></a></div>
+                                        <div class="hover-icon"><a href="#" data-toggle="modal" data-target="#quick-modal"><i class="flaticon-4-search"></i></a></div>
+                                        <div class="hover-icon"><a href="#"><i class="flaticon-3-signs"></i></a></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--footer-->
+        {% include './layouts/footer.html' %}
+
+        <!--modal sản phẩm-->
+        <div class="modal fade quick-modal in" id="quick-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <div class="col-md-5 detail-left text-center">
+                            <ul class="color-var">
+                                <li><a href="#"><i class="fa fa-check"></i></a></li>
+                                <li><a href="#" class="active"><i class="fa fa-check"></i></a></li>
+                                <li><a href="#"><i class="fa fa-check"></i></a></li>
+                                <li><a href="#"><i class="fa fa-check"></i></a></li>
+                                <li><a href="#"><i class="fa fa-check"></i></a></li>
+                            </ul>
+                            <div id="carousel" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="item active" data-thumb="0"> <img src="{% static 'img/product-list/quick-img-1.jpg'%}" alt=""> </div>
+                                    <div class="item" data-thumb="1"> <img src="{% static 'img/product-list/quick-img-2.jpg'%}" alt=""> </div>
+                                    <div class="item" data-thumb="2"> <img src="{% static 'img/product-list/quick-img-3.jpg'%}" alt=""> </div>
+                                    <div class="item" data-thumb="3"> <img src="{% static 'img/product-list/quick-img-4.jpg'%}" alt=""> </div>
+                                    <div class="item" data-thumb="4"> <img src="{% static 'img/product-list/quick-img-1.jpg'%}" alt=""> </div>
+                                    <div class="item" data-thumb="5"> <img src="{% static 'img/product-list/quick-img-2.jpg'%}" alt=""> </div>
+                                    <div class="item" data-thumb="6"> <img src="{% static 'img/product-list/quick-img-3.jpg'%}" alt=""> </div>
+                                    <div class="item" data-thumb="7"> <img src="{% static 'img/product-list/quick-img-4.jpg'%}" alt=""> </div>
+                                </div>
+                            </div>
+                            <div id="thumbcarousel" class="carousel thumbcarousel slide" data-interval="false">
+                                <div class="carousel-inner">
+                                    <div class="item active">
+                                        <div data-target="#carousel" data-slide-to="0" class="thumb"><img src="{% static 'img/product-list/thumb-img-1.jpg'%}" alt=""></div>
+                                        <div data-target="#carousel" data-slide-to="1" class="thumb"><img src="{% static 'img/product-list/thumb-img-2.jpg'%}" alt=""></div>
+                                        <div data-target="#carousel" data-slide-to="2" class="thumb"><img src="{% static 'img/product-list/thumb-img-3.jpg'%}" alt=""></div>
+                                        <div data-target="#carousel" data-slide-to="3" class="thumb"><img src="{% static 'img/product-list/thumb-img-4.jpg'%}" alt=""></div>
+                                    </div>
+                                    <!-- /item -->
+                                    <div class="item">
+                                        <div data-target="#carousel" data-slide-to="4" class="thumb"><img src="{% static 'img/product-list/thumb-img-1.jpg'%}" alt=""></div>
+                                        <div data-target="#carousel" data-slide-to="5" class="thumb"><img src="{% static 'img/product-list/thumb-img-2.jpg'%}" alt=""></div>
+                                        <div data-target="#carousel" data-slide-to="6" class="thumb"><img src="{% static 'img/product-list/thumb-img-3.jpg'%}" alt=""></div>
+                                        <div data-target="#carousel" data-slide-to="7" class="thumb"><img src="{% static 'img/product-list/thumb-img-4.jpg'%}" alt=""></div>
+                                    </div>
+                                    <!-- /item -->
+                                </div>
+                                <!-- /carousel-inner -->
+                                <a class="left carousel-control" href="#thumbcarousel" role="button" data-slide="prev"> <span class="fa fa-angle-left"></span> </a>
+                                <a class="right carousel-control" href="#thumbcarousel" role="button" data-slide="next"> <span class="fa fa-angle-right"></span> </a>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="col-md-7 detail-right">
+                            <div class="detail-top">
+                                <h1>iPhone 7 128GB Rose Gold </h1>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                    <span>( 12 reviews )</span>
+                                    <a href="#">Write a review</a>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="rate">
+                                    <h2>495.50$ <del>$520.20</del></h2>
+                                    <label class="offer-label">-15%</label>
+                                    <span><i class="fa fa-check-circle"></i> In stock</span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <ul class="detail">
+                                <li class="sub-menu"><a class="main-a" href="javascript:void(0)">Description <div class="icon-plus"><i class="fa flaticon-3-signs"></i></div></a>
+
+                                    <ul>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestib porttitor egestas orci, vitae ullamcorper risus dolor sit amet, consectetur adium porttitor egestas orci, vitae ullamcorper risus consectetur id. </p>
+                                    </ul>
+
+                                </li>
+                            </ul>
+                            <ul class="detail feature">
+                                <li class="sub-menu"><a class="main-a" href="javascript:void(0)">Features <div class="icon-plus"><i class="fa flaticon-3-signs"></i></div></a>
+
+                                    <ul>
+                                        <li><i class="fa fa-caret-right" aria-hidden="true"></i>12MP primary camera </li>
+                                        <li><i class="fa fa-caret-right" aria-hidden="true"></i>Quad-LED True Tone flash</li>
+                                        <li><i class="fa fa-caret-right" aria-hidden="true"></i>7MP front facing HD camera </li>
+                                        <li><i class="fa fa-caret-right" aria-hidden="true"></i>4.7-inch (diagonal) Retina HD</li>
+                                    </ul>
+                                    <ul>
+                                        <li><i class="fa fa-caret-right" aria-hidden="true"></i>128GB internal memoryVestib</li>
+                                        <li><i class="fa fa-caret-right" aria-hidden="true"></i>single Nano-SIM </li>
+                                        <li><i class="fa fa-caret-right" aria-hidden="true"></i>Li-Ion 1960 mAh battery</li>
+                                        <li><i class="fa fa-caret-right" aria-hidden="true"></i>1 year manufacturer warranty</li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+
+                                </li>
+                            </ul>
+                            <div class="detail-btm">
+                                <div class="detail-row">
+                                    <p class="text-uppercase">Size</p>
+                                    <ul class="size">
+                                        <li><a href="#">32 GB</a></li>
+                                        <li><a href="#">64 GB</a></li>
+                                        <li class="active"><a href="#">128 GB</a></li>
+                                    </ul>
+                                </div>
+                                <div class="detail-row quantity-box">
+                                    <p class="text-uppercase">Quantity</p>
+                                    <div class="clearfix"></div>
+                                    <div id="field1" class="input--filled">
+                                        <button type="button" id="sub" class="sub"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                        <input type="text" id="1" value="1" class="field">
+                                        <button type="button" id="add" class="add"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <a class="coupon" href="#">Add to cart</a>
+                                    <div class="action-icon pull-right">
+                                        <a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i>Wish list</a>
+                                        <a href="#"><i class="flaticon-refresh"></i>Compare</a>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="detail-row">
+                                    <p><span>SKU:</span> N/A</p>
+                                </div>
+                                <div class="detail-row">
+                                    <p><span>Categories:</span> All, Featured, Shoes</p>
+                                </div>
+                                <div class="detail-row">
+                                    <p><span>Tags:</span> Black, Brown, Red, Shoes, £0.00 - £150.00</p>
+                                </div>
+                                <div class="detail-row">
+                                    <p><span>Share:</span></p>
+                                    <div class="soc-icon">
+                                        <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Facebook"><i class="fa fa-facebook-f"></i></a>
+                                        <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Instagram"><i class="fa fa-instagram"></i></a>
+                                        <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Twitter"><i class="fa fa-twitter"></i></a>
+                                        <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Dribble"><i class="fa fa-dribbble"></i></a>
+                                        <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Pinterest"><i class="fa fa-pinterest-p"></i></a>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/page wrap-->
+
+    <!--js-->
+    <script src="{% static 'js/ajax.js'%}"></script>
+    <script src="{% static 'js/bootstrap.min.js'%}"></script>
+    <!--slider-->
+    <script src="{% static 'js/owl.carousel.min.js'%}"></script>
+    <script src="{% static 'js/theme.js'%}"></script>
+    <!--Range-validator-->
+    <script src="{% static 'js/jquery-ui.min.js'%}"></script>
+    <script src="{% static 'js/product-custom.js'%}"></script>
+    <!--index-->
+    <script src="{% static 'js/index.js'%}"></script>
+    <!--custom-->
+    <script src="{% static 'js/custom.js'%}"></script>
+    <script language=JavaScript>
+        $(document).keydown(function(event) {
+            if (event.keyCode == 123) { // Prevent F12
+                return false;
+            } else if (event.ctrlKey && event.shiftKey && event.keyCode == 73) { // Prevent Ctrl+Shift+I        
+                return false;
+            }
+        });
+
+        $(document).on("contextmenu", function(e) {
+            e.preventDefault();
+        });
+    </script>
+</body>
+
+<!-- Mirrored from theme.innovatory.in/Graby-shop/product-grid.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 29 Nov 2019 15:59:56 GMT -->
+
+</html>

@@ -17,7 +17,12 @@ class Cart(object):
     def add(self, product, quantity, update_quantity=False):
         product_id = str(product.id)
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 0, 'price': str(product.price)}
+            price = 0
+            if product.discount_price is not None:
+                price = (product.price -(product.price * product.discount_price/100))
+            else:
+                price = product.price
+            self.cart[product_id] = {'quantity': 0, 'price': str(price)}
         if update_quantity:
             self.cart[product_id]['quantity'] = quantity
         else:
@@ -49,28 +54,30 @@ class Cart(object):
             self.cart[str(product.id)]['product'] = product
 
         for item in self.cart.values():
-            item['price'] = Decimal(item['price'])
+             
+            item['price'] = int(Decimal(item['price']))
             item['total_price'] = item['price'] * item['quantity']
-            item['total_price_vnd'] = '{:,} VNĐ'.format(item['total_price'])    
+            item['total_price_vnd'] = '{:,} VNĐ'.format(item['total_price'])  
+            
+
             yield item
-         
     def get_total_price(self):
-        return '{:,} VNĐ'.format(sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values()))
+        return sum(int(Decimal(item['price'])) * item['quantity'] for item in self.cart.values())
+    def get_total_price_vnd(self):
+        return '₫ {:,}'.format(self.get_total_price())
     @property
     def coupon(self):
         if self.coupon_id:
             return Coupon.objects.get(id=self.coupon_id) 
         return None
     def get_total_price_after_discount(self):
-        
         if self.coupon.amount is None:
             self.coupon.amount = 0
-        return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values()) - self.coupon.amount
-        
+        return (sum(item['price'] * item['quantity'] for item in self.cart.values()) - self.coupon.amount) if (sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values()) - self.coupon.amount) > 0 else 0
     def get_total_price_after_discount_vnd(self):
         if self.coupon is None:
-            return '{:,} VNĐ'.format(sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values()))
-        return '{:,} VNĐ'.format(sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values()) - self.coupon.amount)
+            return '₫ {:,}'.format(sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values()))
+        return '{:,} VNĐ'.format(self.get_total_price_after_discount())
     def amount_coupon_vnd(self):
-        return '{:,} VNĐ'.format(self.coupon.amount)
+        return '₫{:,}'.format(self.coupon.amount)
     

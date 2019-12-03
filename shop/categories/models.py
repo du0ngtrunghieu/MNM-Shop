@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from django.utils.text import slugify
+from slugify import slugify
 from shop.untils import generate_unique_slug
 
 # Create your models here.
@@ -24,3 +24,12 @@ class Category(models.Model):
         else: 
             self.slug = generate_unique_slug(Category, self.nameCat)
         super(Category, self).save(*args, **kwargs)
+class ProductFamily(models.Model):
+    name = models.CharField('Dòng sản phẩm', max_length=200 )
+    categories = models.ForeignKey(Category,related_name='category', on_delete=models.CASCADE,null=True)
+
+    class Meta:
+        verbose_name_plural = "Dòng Sản Phẩm"
+
+    def __str__(self):
+        return self.name

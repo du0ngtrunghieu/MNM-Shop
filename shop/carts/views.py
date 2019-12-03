@@ -12,10 +12,16 @@ def cart_add(request, slug):
     product = get_object_or_404(Product, slug=slug)
     cart.add(product=product, quantity=1)
     return redirect('cart:detail-cart')
+def cart_add_from_detail(request,slug ,quantity):
+    cart = Cart(request)
+    product = get_object_or_404(Product, slug=slug)
+    cart.add(product=product, quantity=quantity)
+    return redirect('cart:detail-cart')
 def cart_remove(request, slug):
     cart = Cart(request)
     product = get_object_or_404(Product, slug=slug)
     cart.remove(product=product)
+    messages.success(request, f"Đã xoá sản phẩm trong giỏ hàng")
     return redirect('cart:detail-cart')
 def cart_remove_all(request):
     cart = Cart(request)
@@ -33,7 +39,7 @@ def coupon_check(request):
         cart = Cart(request)
         code=request.POST.get("code")
         try:
-            coupon = Coupon.objects.get(code=code)
+            coupon = Coupon.objects.get(code__iexact=code)
             request.session['coupon_id'] = str(coupon.id)
             print(coupon.id)
             messages.success(request, f"Đã thêm mã giảm giá : {code}")
