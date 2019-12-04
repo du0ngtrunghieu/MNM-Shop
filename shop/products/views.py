@@ -18,7 +18,6 @@ def get_price_min_max():
 def get_count_product_by_brands():
     queryset = Brand.objects.values('name').annotate(count =Count('brands'))
     return queryset
-    filter
 def ProductListPage(request):
     numb_display_page = 12
     all_product = Product.objects.filter( available = True)
