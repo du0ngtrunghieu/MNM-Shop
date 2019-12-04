@@ -17,8 +17,10 @@ LABEL_CHOICES = (
 class Product(models.Model):
     title = models.CharField('Tên sản phẩm',max_length=200)
     price = models.BigIntegerField('Giá')
+    # phầm trăm giảm giá
     discount_price = models.BigIntegerField('Giảm giá (%)',blank=True, null=True)
     # tiền sau khi có giảm giá
+    
     brands = models.ForeignKey("Brand",related_name='brands', on_delete=models.CASCADE,null=True)
     productfamily = models.ForeignKey(ProductFamily,related_name='productfamily', on_delete=models.CASCADE,null=True)
     label = models.CharField(choices=LABEL_CHOICES, max_length=20,null=True,blank=True)
