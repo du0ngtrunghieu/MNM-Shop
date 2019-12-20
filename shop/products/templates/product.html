@@ -91,7 +91,14 @@
                         </div>
                         <div class="product-body">
                             <p><a href="{{ a.get_absolute_url }}">{{ a.title }}</a></p>
-                            <h6>Đã Bán : 5</h6>
+                            <h6><span class="text-left">Đã Bán : 
+                            {% if a.stocks %}
+                                {{ a.stocks.is_sold}}
+                            {% else %}
+                                0
+                            {% endif %}
+                                </span> </h6>
+                            
                             <h4>{{ a.get_price_discount_vnd }}</h4>
                             
                             <div class="product-hover">

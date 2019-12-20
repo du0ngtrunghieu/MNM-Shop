@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product,Category,ProductImage,Feature,Brand
+from .models import Product,Category,ProductImage,Feature,Brand,StockProduct
 # Register your models here.
 
 class MultilImageProduct(admin.StackedInline):
@@ -18,3 +18,4 @@ class PageAdminProduct(admin.ModelAdmin):
 admin.site.register(Product,PageAdminProduct)
 admin.site.register(ProductImage)
 admin.site.register(Brand)
+admin.site.register(StockProduct)
