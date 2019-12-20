@@ -1,8 +1,10 @@
 from django.db import models
 from products.models import Product
 from carts.models import Coupon
+from django.contrib.auth import get_user_model
+User = get_user_model()
 class Order(models.Model):
-    
+    user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True,null=True)
     first_name = models.CharField(max_length=60)
     last_name = models.CharField(max_length=60)
     email = models.EmailField()

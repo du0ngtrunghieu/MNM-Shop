@@ -43,7 +43,7 @@ def coupon_check(request):
         try:
             coupon = Coupon.objects.get(code__iexact=code)
             request.session['coupon_id'] = str(coupon.id)
-            print(coupon.id)
+            
             messages.success(request, f"Đã thêm mã giảm giá : {code}")
             
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

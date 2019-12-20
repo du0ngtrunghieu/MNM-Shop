@@ -19,8 +19,6 @@ class Product(models.Model):
     price = models.BigIntegerField('Giá')
     # phầm trăm giảm giá
     discount_price = models.BigIntegerField('Giảm giá (%)',blank=True, null=True)
-    # tiền sau khi có giảm giá
-    
     brands = models.ForeignKey("Brand",related_name='brands', on_delete=models.CASCADE,null=True)
     productfamily = models.ForeignKey(ProductFamily,related_name='productfamily', on_delete=models.CASCADE,null=True)
     label = models.CharField(choices=LABEL_CHOICES, max_length=20,null=True,blank=True)
@@ -39,6 +37,7 @@ class Product(models.Model):
                 self.slug = generate_unique_slug(Product, self.title)
         else: 
             self.slug = generate_unique_slug(Product, self.title)
+        
         super(Product, self).save(*args, **kwargs)
     def __str__(self):
         return self.title
@@ -84,3 +83,18 @@ class Brand(models.Model):
 
     def __str__(self):
         return self.name
+class StockProduct(models.Model):
+    product = models.OneToOneField(Product,related_name='stocks', on_delete=models.CASCADE,null=True)
+    is_stock = models.BooleanField("Trạng Thái Trong Kho",default=True) # còn hàng = True
+    in_stock = models.IntegerField("Số lượng sản phẩm trong kho",default=1)
+    is_sold  = models.IntegerField("Số Lượng đã bán",default=0)
+
+
+    class Meta:
+        verbose_name = "Kho Hàng"
+        verbose_name_plural = "Kho Hàng"
+
+    def __str__(self):
+        return self.product.title
+
+    

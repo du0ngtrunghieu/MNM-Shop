@@ -1,46 +1,133 @@
-{% extends "account/base.html" %}
+{% load staticfiles %}
+{% load humanize %}
+<!doctype html>
+<html lang="en">
+<!-- Mirrored from theme.innovatory.in/Graby-shop/product-grid.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 29 Nov 2019 15:59:55 GMT -->
 
-{% load i18n %}
-{% load account socialaccount %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Đăng Nhập</title>
+    <link rel="icon" href="{% static 'img/index/favicon.png'%}" sizes="16x16">
+    <!--css-->
+    <link href="{% static 'css/style.css'%}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/range-select.css'%}" rel="stylesheet" type="text/css">
+    <!--BOOTSTRAP-->
+    <link href="{% static 'css/bootstrap.css'%}" rel="stylesheet" type="text/css">
+    <!--fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap&subset=vietnamese" rel="stylesheet">
+    <link href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css'%}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fonts/font/flaticon.css'%}" rel="stylesheet" type="text/css">
+    <!--range-slider-->
+    <link href="{% static 'css/range-slider.css'%}" rel="stylesheet" type="text/css">
+    <!--slider-->
+    <link href="{% static 'css/owl.carousel.min.css'%}" rel="stylesheet">
+    <link href="{% static 'css/theme.css'%}" rel="stylesheet">
+</head>
 
-{% block head_title %}{% trans "Sign In" %}{% endblock %}
+<body>
 
-{% block content %}
+    <div class="grid-page">
+        <!--page wrap-->
 
-<h1>{% trans "Sign In" %}</h1>
+        <a href="javascript:" id="return-to-top"><i class="fa fa-angle-up"></i></a>
 
-{% get_providers as socialaccount_providers %}
+        
 
-{% if socialaccount_providers %}
-<p>{% blocktrans with site.name as site_name %}Please sign in with one
-of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
-for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
+        <!--search-->
+        <div class="container logo-bar">
+          
+         
+          <div class="clearfix"></div>
+      </div>
 
-<div class="socialaccount_ballot">
+        <!--menu-->
+        {% include '../layouts/menu.html' %}
 
-  <ul class="socialaccount_providers">
-    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-  </ul>
+        <!--Header-->
+        <div class="container-fluid header-main">
+            <div class="container text-center">
 
-  <div class="login-or">{% trans 'or' %}</div>
+                <h2>Đăng Nhập</h2>
+                
 
-</div>
+            </div>
+        </div>
+       
+        <div class="container-fluid contact-main">
+            <div class="tab-content">
+          <div class="col-md-6 col-md-offset-1 contact-left padd-80 mr-4 ">
+            
+              <div class="contact-info">
+              <h3>Vui Lòng Đăng Nhập<i class="flaticon-1-send pull-right"></i></h3>
+                  
+              </div>  
+              <div class="row">
+                  
+                  <form class="form-sec" method="POST" action="{% url 'account_login' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                    {% endif %}
+                    <a class="button secondaryAction" href="{% url 'account_reset_password' %}"></a>
+                    <div class="col-sm-12 text-right"><button type="submit" class="shp-btn">Đăng Nhập<i class="flaticon-paper-plane"></i></button></div>
+                  
+                  </form>
+                  <div class="clearfix"></div>
+                  
+              </div>      
+              
+          </div>
+         
+          
+          
+          
+          <div class="clearfix"></div>
+        </div>
+      </div>
+        
+    </div>
+    <!--/page wrap-->
 
-{% include "socialaccount/snippets/login_extra.html" %}
+    <!--js-->
+    <script src="{% static 'js/ajax.js'%}"></script>
+    <script src="{% static 'js/bootstrap.min.js'%}"></script>
+    <!--slider-->
+    <script src="{% static 'js/owl.carousel.min.js'%}"></script>
+    <script src="{% static 'js/theme.js'%}"></script>
+    <!--Range-validator-->
+    <script src="{% static 'js/jquery-ui.min.js'%}"></script>
+    <script src="{% static 'js/product-custom.js'%}"></script>
+    <!--index-->
+    <script src="{% static 'js/index.js'%}"></script>
+    <!--custom-->
+    <script src="{% static 'js/custom.js'%}"></script>
+    <script language=JavaScript>
+        $(document).keydown(function (event) {
+            if (event.keyCode == 123) { // Prevent F12
+                return false;
+            } else if (event.ctrlKey && event.shiftKey && event.keyCode == 73) { // Prevent Ctrl+Shift+I        
+                return false;
+            }
+        });
 
-{% else %}
-<p>{% blocktrans %}If you have not created an account yet, then please
-<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
-{% endif %}
-<p>Trang đăng nhập</p>
-<form class="login" method="POST" action="{% url 'account_login' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-  <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
-</form>
+        $(document).on("contextmenu", function (e) {
+            e.preventDefault();
+        });
+        
+            
+    </script>
 
-{% endblock %}
+</body>
+
+<!-- Mirrored from theme.innovatory.in/Graby-shop/product-grid.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 29 Nov 2019 15:59:56 GMT -->
+
+</html>
+
+
+
+
+
+<!-- #region -->
+

@@ -1,6 +1,7 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -44,15 +45,15 @@
 
         <!--main-sec-->
         <div class="container cart-sec padd-80">
-            
+
             <div id="msform">
                 {% if messages %}
-                    {% for message in messages %}
-                     <div class="alert alert-{{ message.tags }}" role="alert">
-                           <strong> {{ message }}</strong>
-                      </div>
-                      {% endfor %}
-                   
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert">
+                    <strong> {{ message }}</strong>
+                </div>
+                {% endfor %}
+
                 {% endif %}
                 <!-- progressbar -->
                 <ul id="progressbar">
@@ -80,36 +81,39 @@
                                     {% with product=item.product  %}
                                     <td class="width">
                                         <div class="image">
-                                            <img src="{{product.thumb.url}}" alt="" class="img-responsive" width="100" height="100"/>
+                                            <img src="{{product.thumb.url}}" alt="" class="img-responsive" width="100"
+                                                height="100" />
                                             <p>{{ product.title}}</p>
-                                            
+
                                             <h5>{{ product.categories }}</h5>
                                         </div>
                                     </td>
-                                    <td class="cart-price">{{ product.get_price_discount_vnd}} 
-                                    {% if product.discount_price %}
+                                    <td class="cart-price">{{ product.get_price_discount_vnd}}
+                                        {% if product.discount_price %}
                                         <del>{{ product.get_price_vnd }}</del>
-                                    {% endif %}</td>
+                                        {% endif %}</td>
                                     <td class="user">
 
                                         <div id=field1 class="quantity">
                                             <input type="hidden" name="slug" value={{ product.slug }}>
                                             <button type="button" id="sub" class=sub><i class="fa fa-minus"
                                                     aria-hidden="true"></i></button>
-                                            <input name="soluong" type="text" id="1" value={{ item.quantity}} class=field>
+                                            <input name="soluong" type="text" id="1" value={{ item.quantity}}
+                                                class=field>
                                             <button type="button" id="add" class=add><i class="fa fa-plus"
                                                     aria-hidden="true"></i></button>
                                         </div>
 
                                     </td>
                                     <td>{{item.total_price_vnd}}</td>
-                                    <td><a href="{% url 'cart:remove-cart' product.slug %}"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a></td>
+                                    <td><a href="{% url 'cart:remove-cart' product.slug %}"><i
+                                                class="fa fa-times-circle-o" aria-hidden="true"></i></a></td>
                                     {% endwith %}
                                 </tr>
                                 {% empty %}
-                                    <td colspan="4">Không có sản phẩm</td>
+                                <td colspan="4">Không có sản phẩm</td>
                                 {% endfor %}
-                                
+
                             </table>
                         </div>
                     </div>
@@ -117,22 +121,23 @@
                     {% with total_items=cart|length %}
                     {% if cart|length > 0 %}
                     <div class="shp-cart-btn">
-                        
+
                         <a href="{% url 'cart:remove-all-cart' %}" class="cart-btn">Xoá hết sản phẩm</a>
                     </div>
-                    
+
                     {% if cart.coupon.amount is None %}
-                        <div class="promo-input">
-                            <form id="magiamgia" method="POST" action="{% url 'cart:check-coupon' %}">
-                                <i class="flaticon-percentage"></i>
-                                {% csrf_token %} 
-                                <input type="text" name="code" placeholder="Mã giảm giá" />
-                                <a href="javascript:{}" onclick="document.getElementById('magiamgia').submit();" class="promo-i"><i class="flaticon-5-thin-right-arrow" ></i></a>
-                            </form>
-                        </div>
+                    <div class="promo-input">
+                        <form id="magiamgia" method="POST" action="{% url 'cart:check-coupon' %}">
+                            <i class="flaticon-percentage"></i>
+                            {% csrf_token %}
+                            <input type="text" name="code" placeholder="Mã giảm giá" />
+                            <a href="javascript:{}" onclick="document.getElementById('magiamgia').submit();"
+                                class="promo-i"><i class="flaticon-5-thin-right-arrow"></i></a>
+                        </form>
+                    </div>
                     {% endif %}
-                        
-                    
+
+
                     <div class="pull-right">
                         <button id="update-cart" class="cart-btn upd-btn">Cập nhật giỏ hàng</button>
                         <a href="{% url 'product:list-products' %}" class="shp-btn">Tiếp tục mua hàng</a>
@@ -169,19 +174,20 @@
                                     <td><b>Phí vận chuyển</b></td>
                                     <td class="shipping text-right text-capitalize">Miễn phí</td>
                                 </tr>
-                                  {% if cart.coupon.amount %}
-                                 
-                                  <tr>
-                                        <td><b>Mã giảm giá</b></td>
-                                        <td class="shipping text-right text-capitalize">- {{ cart.amount_coupon_vnd}}</td>
-                                        <td><a href="{% url 'cart:remove-coupon' cart.coupon.code %}">&nbsp<i class="fa fa-times-circle-o" aria-hidden="true"></i></a></td>
-                                    </tr>
-                                  <tr>
-                                  {% endif %}
+                                {% if cart.coupon.amount %}
+
+                                <tr>
+                                    <td><b>Mã giảm giá</b></td>
+                                    <td class="shipping text-right text-capitalize">- {{ cart.amount_coupon_vnd}}</td>
+                                    <td><a href="{% url 'cart:remove-coupon' cart.coupon.code %}">&nbsp<i
+                                                class="fa fa-times-circle-o" aria-hidden="true"></i></a></td>
+                                </tr>
+                                <tr>
+                                    {% endif %}
 
                                     <td><b>Tổng tiền :</b></td>
                                     <td class="total text-right">{{ cart.get_total_price_after_discount_vnd}}</td>
-                                    
+
                                 </tr>
                             </table>
                         </div>
@@ -197,349 +203,378 @@
 
                 </fieldset>
 
+                </fieldset>
+
+                <fieldset class="delivery-tab">
+                    <div class="col-md-10 col-md-offset-1">
+
+
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#Free" class="cart-btn free-del"
+                                    aria-controls="Free" role="tab" data-toggle="tab">Vui lòng điền đầy đủ thông tin</a>
+                            </li>
+
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="Free">
+                                <form id="form-thongtin" url-order="{% url 'order:create-order' %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-sec">
+                                        <div class="row">
+                                            <div class="form-body col-sm-6">
+                                                <p>Họ *</p>
+                                                <input type="text" required placeholder="Vui lòng nhập họ" name="ho" />
+                                            </div>
+                                            <div class="form-body col-sm-6">
+                                                <p>Tên *</p>
+                                                <input type="text" required placeholder="Vui lòng nhập tên"
+                                                    name="ten" />
+                                            </div>
+                                            <div class="form-body col-sm-6">
+                                                <p>Email *</p>
+                                                <input type="text" required placeholder="trunghieu@gmail.com"
+                                                    name="email" />
+                                            </div>
+                                            <div class="form-body col-sm-6">
+                                                <p>Số Điện Thoại *</p>
+                                                <input type="text" required placeholder="9876543210" name="sdt" />
+                                            </div>
+                                            <div class="form-body col-sm-12">
+                                                <p>Địa Chỉ *</p>
+                                                <textarea id="txtdiachi" required placeholder="2 Lê Lợi, Thừa Thiên Huế"
+                                                    name="diachi"></textarea>
+                                            </div>
+                                            <div class="form-body col-sm-12">
+                                                <p>Thành Phố *</p>
+                                                <select id="txtthanhpho" name="thanhpho">
+                                                    <option value="hue">Huế</option>
+                                                    <option value="hcm">Hồ Chí Minh</option>
+                                                    <option value="danang">Đà Nẵng</option>
+                                                    <option value="hanoi">Hà Nội</option>
+
+                                                </select>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+                                </form>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <a href="javascript:void(0)" class="cart-btn previous"><i class="flaticon-2-left-arrow"></i>
+                        Back</a>
+                    <a href="javascript:void(0)" class="cart-btn next" id="vanchuyen">Payment <i
+                            class="flaticon-5-thin-right-arrow"></i></a>
+                    <div class="clearfix"></div>
+
+            </div>
             </fieldset>
-         
-        	<fieldset class="delivery-tab">
-         	<div class="col-md-10 col-md-offset-1">
 
-              
-              <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#Free" class="cart-btn free-del" aria-controls="Free" role="tab" data-toggle="tab">Vui lòng điền đầy đủ thông tin</a></li>
-                
-              </ul>
-            
-              
-              <div class="tab-content">
-                <div role="tabpanel" class="tab-pane fade in active" id="Free">
-                	<div class="form-sec">
-                    	<div class="row">
-                    	<div class="form-body col-sm-6">
-                        	<p>Họ *</p>
-                            <input type="text" required placeholder="Enter your name" />
-                        </div>
-                        <div class="form-body col-sm-6">
-                        	<p>Tên *</p>
-                            <input type="text" required placeholder="Enter your last name" />
-                        </div>
-                        <div class="form-body col-sm-6">
-                        	<p>Email *</p>
-                            <input type="email" required placeholder="grabyshop@gmail.com" />
-                        </div>
-                        <div class="form-body col-sm-6">
-                        	<p>Số Điện Thoại *</p>
-                            <input type="text" required placeholder="9876543210" />
-                        </div>
-                        <div class="form-body col-sm-12">
-                        	<p>Địa Chỉ *</p>
-                            <textarea id="txtdiachi" required placeholder="Street Address, Apartment, suite, unit etc. "></textarea>
-                        </div>
-                        <div class="form-body col-sm-12">
-                        	<p>Thành Phố *</p>
-                            <select id="txtthanhpho">
-                            	<option value="hue">Huế</option>
-                                <option value="hcm">Hồ Chí Minh</option>
-                                <option value="danang">Đà Nẵng</option>
-                                <option value="hanoi">Hà Nội</option>
-                                
-                            </select>
-                        </div>
-                        
-                        <div class="clearfix"></div>
-                        </div>
-                        
-                        
-                    </div>
-                </div>
-                
-              </div>
-              <a href="javascript:void(0)" class="cart-btn previous"><i class="flaticon-2-left-arrow"></i> Back</a>
-              <a href="javascript:void(0)" class="cart-btn next" id="vanchuyen">Payment <i class="flaticon-5-thin-right-arrow"></i></a>
-                        <div class="clearfix"></div>
-              
-            </div>
-         </fieldset>
-         
-        	<fieldset class="payment-tab delivery-tab">
-         	<div class="col-md-10 col-md-offset-1">
+            <fieldset class="payment-tab delivery-tab">
+                <div class="col-md-10 col-md-offset-1">
 
-              
-              <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#visa" class="cart-btn" aria-controls="visa" role="tab" data-toggle="tab"><img src="{% static 'img/cart/payment-1.png' %}" alt="" class="img-responsive" /></a></li>
-                <li role="presentation"><a href="#Master-card" aria-controls="Master-card" class="cart-btn" role="tab" data-toggle="tab"><img src="{% static 'img/cart/payment-2.png' %}" alt="" class="img-responsive" /></a></li>
-                <li role="presentation"><a href="#Paypal" aria-controls="Paypal" class="cart-btn" role="tab" data-toggle="tab"><img src="{% static 'img/cart/payment-3.png' %}" alt="" class="img-responsive" /></a></li>
-              </ul>
-            
-              
-              <div class="tab-content">
-                <div role="tabpanel" class="tab-pane fade in active" id="visa">
-                	<div class="form-sec">
-                    	<div class="row">
-                    	<div class="form-body col-sm-6">
-                        	<p>Cardholder Name*</p>
-                            <input type="text" required placeholder="Enter your cardholder name" />
-                        </div>
-                        <div class="form-body col-sm-6">
-                        	<p>Card Number *</p>
-                            <input type="text" required placeholder="Enter your card number" />
-                        </div>
-                        
- 
-                        <div class="col-md-8">
-                        <p>End Date*</p>
-                        <div class="form-body">
-                        	
-                            <select>
-                            	<option>MM</option>
-                                <option>Jan</option>
-                                <option>Fab</option>
-                                <option>Mar</option>
-                                <option>Apr</option>
-                                <option>May</option>
-                                <option>June</option>
-                                <option>July</option>
-                                <option>Aug</option>
-                                <option>Sept</option>
-                                <option>Oct</option>
-                                <option>Nav</option>
-                                <option>Dec</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-body">
-                            <select>
-                            	<option>YYYY</option>
-                                <option>2010</option>
-                                <option>2011</option>
-                                <option>2012</option>
-                                <option>2013</option>
-                                <option>2014</option>
-                                <option>2015</option>
-                                <option>2016</option>
-                                <option>2017</option>
-                            </select>
-                        </div>
-                        </div>
-                        <div class="form-body col-sm-4">
-                        	<p>CVV *</p>
-                            <input type="text" required placeholder="Enter CVV code" />
-                        </div>
-                        
 
-                        <div class="clearfix"></div>
-                        </div>
-                        
-                        
-                    </div>
-                </div>
-                
-                <div role="tabpanel" class="tab-pane fade" id="Master-card">
-                	<div class="form-sec">
-                    	<div class="row">
-                    	<div class="form-body col-sm-6">
-                        	<p>Cardholder Name*</p>
-                            <input type="text" required placeholder="Enter your cardholder name" />
-                        </div>
-                        <div class="form-body col-sm-6">
-                        	<p>Card Number *</p>
-                            <input type="text" required placeholder="Enter your card number" />
-                        </div>
-                        
- 
-                        <div class="col-md-8">
-                        <p>End Date*</p>
-                        <div class="form-body col-sm-6">
-                        	
-                            <select>
-                            	<option>MM</option>
-                                <option>Jan</option>
-                                <option>Fab</option>
-                                <option>Mar</option>
-                                <option>Apr</option>
-                                <option>May</option>
-                                <option>June</option>
-                                <option>July</option>
-                                <option>Aug</option>
-                                <option>Sept</option>
-                                <option>Oct</option>
-                                <option>Nav</option>
-                                <option>Dec</option>
-                            </select>
-                        </div>
-                        <div class="form-body col-sm-6">
-                            <select>
-                            	<option>YYYY</option>
-                                <option>2010</option>
-                                <option>2011</option>
-                                <option>2012</option>
-                                <option>2013</option>
-                                <option>2014</option>
-                                <option>2015</option>
-                                <option>2016</option>
-                                <option>2017</option>
-                            </select>
-                        </div>
-                        </div>
-                        <div class="form-body col-sm-4">
-                        	<p>CVV *</p>
-                            <input type="text" required placeholder="Enter CVV code" />
-                        </div>
-                        
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#visa" class="cart-btn" aria-controls="visa"
+                                role="tab" data-toggle="tab"><img src="{% static 'img/cart/payment-1.png' %}" alt=""
+                                    class="img-responsive" /></a></li>
+                        <li role="presentation"><a href="#Master-card" aria-controls="Master-card" class="cart-btn"
+                                role="tab" data-toggle="tab"><img src="{% static 'img/cart/payment-2.png' %}" alt=""
+                                    class="img-responsive" /></a></li>
+                        <li role="presentation"><a href="#Paypal" aria-controls="Paypal" class="cart-btn" role="tab"
+                                data-toggle="tab"><img src="{% static 'img/cart/payment-3.png' %}" alt=""
+                                    class="img-responsive" /></a></li>
+                    </ul>
 
-                        <div class="clearfix"></div>
-                        </div>
-                        
-                        
-                    </div>
-                </div>
-                
-                <div role="tabpanel" class="tab-pane fade" id="Paypal">
-                	<div class="form-sec">
-                    	<div class="row">
-                    	<div class="form-body col-sm-6">
-                        	<p>Cardholder Name*</p>
-                            <input type="text" required placeholder="Enter your cardholder name" />
-                        </div>
-                        <div class="form-body col-sm-6">
-                        	<p>Card Number *</p>
-                            <input type="text" required placeholder="Enter your card number" />
-                        </div>
-                        
- 
-                        <div class="col-md-8">
-                        <p>End Date*</p>
-                        <div class="form-body col-sm-6">
-                        	
-                            <select>
-                            	<option>MM</option>
-                                <option>Jan</option>
-                                <option>Fab</option>
-                                <option>Mar</option>
-                                <option>Apr</option>
-                                <option>May</option>
-                                <option>June</option>
-                                <option>July</option>
-                                <option>Aug</option>
-                                <option>Sept</option>
-                                <option>Oct</option>
-                                <option>Nav</option>
-                                <option>Dec</option>
-                            </select>
-                        </div>
-                        <div class="form-body col-sm-6">
-                            <select>
-                            	<option>YYYY</option>
-                                <option>2010</option>
-                                <option>2011</option>
-                                <option>2012</option>
-                                <option>2013</option>
-                                <option>2014</option>
-                                <option>2015</option>
-                                <option>2016</option>
-                                <option>2017</option>
-                            </select>
-                        </div>
-                        </div>
-                        <div class="form-body col-sm-4">
-                        	<p>CVV *</p>
-                            <input type="text" required placeholder="Enter CVV code" />
-                        </div>
-                        
 
-                        <div class="clearfix"></div>
-                        </div>
-                        
-                        
-                    </div>
-                </div>
-              </div>
-              <a href="javascript:void(0)" class="cart-btn previous"><i class="flaticon-2-left-arrow"></i> Trở Lại</a>
-              <a href="javascript:void(0)" class="cart-btn next">Payment <i class="flaticon-5-thin-right-arrow"></i></a>
-                        <div class="clearfix"></div>
-              
-            </div>
-         </fieldset>
-         
-         	<fieldset class="confirmation-tab delivery-tab">
-         	<div class="col-md-12">
-         	<div class="dilivery-info">
-            	<h4>Thông Tin Giao Hàng</h4>
-                <div class="express">
-                	<i class="flaticon-6-express"></i>
-                    <p>Giao Hàng Nhanh - <span>Miễn Phí</span></p>
-                </div>
-                <div class="express">
-                	<i class="flaticon-placeholder-1"></i>
-                    <p id="diachi">407/77 Donel Runn, Blueland NY 125 650.</p>
-                </div>
-                <div class="express">
-                	<i class="flaticon-phone-call"></i>
-                    <p id="sodienthoai">+01 9876543210</p>
-                </div>
-                
-                <div class="express deli-pay">
-                	<h4>Payment</h4>
-                	<i class="flaticon-6-money"></i>
-                    <p>Visa xxxx xxxx xxxx 3526</p>
-                </div>
-            </div>
-            
-            <div class="delivery-cart dilivery-info">
-            	<h4>Giỏ Hàng</h4>
-                <div class="cart-detail">
-            	<table>
-                	<tbody>
-                        
-                        {% for item in cart %}
-                        <tr>
-                                <td class="order">
-                                    <img src="{{ item.product.thumb.url}}" alt="" class="img-responsive cart-img" width="100px" height="100px"/>
-                                    <div class="order-detail">
-                                    <p>{{ item.product.title}}</p>
-                                    <span>x{{ item.quantity }}</span>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade in active" id="visa">
+                            <div class="form-sec">
+                                <div class="row">
+                                    <div class="form-body col-sm-6">
+                                        <p>Tên Thẻ*</p>
+                                        <input type="text" required placeholder="Enter your cardholder name" />
                                     </div>
-                                    
-                                </td>
-                                <td class="order-price"><h5>{{ item.product.get_price_discount_vnd }}</h5><h6>{{ item.product.get_price_vnd }}</h6></td>
-                        </tr>
-                        {% endfor %}
-                            
-                    	
-                        
-                        
-                        
-                        <tr class="total-price">
-                        	<td class="order"><h2>Tổng</h2></td>
-                            <td class="order-price"><h3>{{ cart.get_total_price_vnd }}</h3></td>
-                        </tr>
-                    </tbody>
-                </table>
+                                    <div class="form-body col-sm-6">
+                                        <p>Số Thẻ *</p>
+                                        <input type="text" required placeholder="Enter your card number" />
+                                    </div>
+
+
+                                    <div class="col-md-8">
+                                        <p>End Date*</p>
+                                        <div class="form-body">
+
+                                            <select>
+                                                <option>MM</option>
+                                                <option>Jan</option>
+                                                <option>Fab</option>
+                                                <option>Mar</option>
+                                                <option>Apr</option>
+                                                <option>May</option>
+                                                <option>June</option>
+                                                <option>July</option>
+                                                <option>Aug</option>
+                                                <option>Sept</option>
+                                                <option>Oct</option>
+                                                <option>Nav</option>
+                                                <option>Dec</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-body">
+                                            <select>
+                                                <option>YYYY</option>
+                                                <option>2010</option>
+                                                <option>2011</option>
+                                                <option>2012</option>
+                                                <option>2013</option>
+                                                <option>2014</option>
+                                                <option>2015</option>
+                                                <option>2016</option>
+                                                <option>2017</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-body col-sm-4">
+                                        <p>CVV *</p>
+                                        <input type="text" required placeholder="Enter CVV code" />
+                                    </div>
+
+
+                                    <div class="clearfix"></div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade" id="Master-card">
+                            <div class="form-sec">
+                                <div class="row">
+                                    <div class="form-body col-sm-6">
+                                        <p>Cardholder Name*</p>
+                                        <input type="text" required placeholder="Enter your cardholder name" />
+                                    </div>
+                                    <div class="form-body col-sm-6">
+                                        <p>Card Number *</p>
+                                        <input type="text" required placeholder="Enter your card number" />
+                                    </div>
+
+
+                                    <div class="col-md-8">
+                                        <p>End Date*</p>
+                                        <div class="form-body col-sm-6">
+
+                                            <select>
+                                                <option>MM</option>
+                                                <option>Jan</option>
+                                                <option>Fab</option>
+                                                <option>Mar</option>
+                                                <option>Apr</option>
+                                                <option>May</option>
+                                                <option>June</option>
+                                                <option>July</option>
+                                                <option>Aug</option>
+                                                <option>Sept</option>
+                                                <option>Oct</option>
+                                                <option>Nav</option>
+                                                <option>Dec</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-body col-sm-6">
+                                            <select>
+                                                <option>YYYY</option>
+                                                <option>2010</option>
+                                                <option>2011</option>
+                                                <option>2012</option>
+                                                <option>2013</option>
+                                                <option>2014</option>
+                                                <option>2015</option>
+                                                <option>2016</option>
+                                                <option>2017</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-body col-sm-4">
+                                        <p>CVV *</p>
+                                        <input type="text" required placeholder="Enter CVV code" />
+                                    </div>
+
+
+                                    <div class="clearfix"></div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade" id="Paypal">
+                            <div class="form-sec">
+                                <div class="row">
+                                    <div class="form-body col-sm-6">
+                                        <p>Cardholder Name*</p>
+                                        <input type="text" required placeholder="Enter your cardholder name" />
+                                    </div>
+                                    <div class="form-body col-sm-6">
+                                        <p>Card Number *</p>
+                                        <input type="text" required placeholder="Enter your card number" />
+                                    </div>
+
+
+                                    <div class="col-md-8">
+                                        <p>End Date*</p>
+                                        <div class="form-body col-sm-6">
+
+                                            <select>
+                                                <option>MM</option>
+                                                <option>Jan</option>
+                                                <option>Fab</option>
+                                                <option>Mar</option>
+                                                <option>Apr</option>
+                                                <option>May</option>
+                                                <option>June</option>
+                                                <option>July</option>
+                                                <option>Aug</option>
+                                                <option>Sept</option>
+                                                <option>Oct</option>
+                                                <option>Nav</option>
+                                                <option>Dec</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-body col-sm-6">
+                                            <select>
+                                                <option>YYYY</option>
+                                                <option>2010</option>
+                                                <option>2011</option>
+                                                <option>2012</option>
+                                                <option>2013</option>
+                                                <option>2014</option>
+                                                <option>2015</option>
+                                                <option>2016</option>
+                                                <option>2017</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-body col-sm-4">
+                                        <p>CVV *</p>
+                                        <input type="text" required placeholder="Enter CVV code" />
+                                    </div>
+
+
+                                    <div class="clearfix"></div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0)" class="cart-btn previous"><i class="flaticon-2-left-arrow"></i> Trở
+                        Lại</a>
+                    <a href="javascript:void(0)" class="cart-btn next">Payment <i
+                            class="flaticon-5-thin-right-arrow"></i></a>
+                    <div class="clearfix"></div>
+
                 </div>
-            </div>
-            
-            <a href="javascript:void(0)" class="cart-btn previous"><i class="flaticon-2-left-arrow"></i> Trở về</a>
-            <a href="javascript:void(0)" class="next cart-btn shp-btn pull-right">Xác Nhận Đơn Hàng</a>
-            </div>
-         </fieldset>
-         
-         	<fieldset class="confirmation-tab delivery-tab">
-         	<div class="col-md-12 success-order">
-            	<div class="col-md-6 col-md-offset-3">
-         		<img src="{% static 'img/cart/success.png' %}" alt="" class="img-responsive" />
-                <h4>Congratulation. Your order is accepted Successfully</h4>
-                <p>Let me be clear. Not even close. We did not go by choise. We went because of necessity.</p>
-                <a href="javascript:void(0)" class="next shp-btn">Kiểm Tra Đơn Hàng</a>
+            </fieldset>
+
+            <fieldset class="confirmation-tab delivery-tab">
+                <div class="col-md-12">
+                    <div class="dilivery-info">
+                        <h4>Thông Tin Giao Hàng</h4>
+                        <div class="express">
+                            <i class="flaticon-6-express"></i>
+                            <p>Giao Hàng Nhanh - <span>Miễn Phí</span></p>
+                        </div>
+                        <div class="express">
+                            <i class="flaticon-placeholder-1"></i>
+                            <p id="diachi">407/77 Donel Runn, Blueland NY 125 650.</p>
+                        </div>
+                        <div class="express">
+                            <i class="flaticon-phone-call"></i>
+                            <p id="sodienthoai">+01 9876543210</p>
+                        </div>
+
+                        <div class="express deli-pay">
+                            <h4>Thanh Toán</h4>
+                            <i class="flaticon-6-money"></i>
+                            <p>Visa xxxx xxxx xxxx 3526</p>
+                        </div>
+                    </div>
+
+                    <div class="delivery-cart dilivery-info">
+                        <h4>Giỏ Hàng</h4>
+                        <div class="cart-detail">
+                            <table>
+                                <tbody>
+
+                                    {% for item in cart %}
+                                    <tr>
+                                        <td class="order">
+                                            <img src="{{ item.product.thumb.url}}" alt=""
+                                                class="img-responsive cart-img" width="100px" height="100px" />
+                                            <div class="order-detail">
+                                                <p>{{ item.product.title}}</p>
+                                                <span>x{{ item.quantity }}</span>
+                                            </div>
+
+                                        </td>
+                                        <td class="order-price">
+                                            <h5>{{ item.product.get_price_discount_vnd }}</h5>
+                                            <h6>{{ item.product.get_price_vnd }}</h6>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+
+
+
+
+
+                                    <tr class="total-price">
+                                        <td class="order">
+                                            <h2>Tổng</h2>
+                                        </td>
+                                        <td class="order-price">
+                                            <h3>{{ cart.get_total_price_vnd }}</h3>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <a href="javascript:void(0)" class="cart-btn previous"><i class="flaticon-2-left-arrow"></i> Trở
+                        về</a>
+                        <button 
+                        class="next cart-btn shp-btn pull-right" type="hide" style="display: none;" id="next-frm"></button>
+                    <button id="submit-formxacnhan" type="submit" form="form-thongtin"
+                        class="cart-btn shp-btn pull-right">Xác Nhận Đơn Hàng</button>
                 </div>
-            </div>
-         </fieldset>
+            </fieldset>
+            <fieldset class="confirmation-tab delivery-tab">
+                <div class="col-md-12 success-order">
+                   <div class="col-md-6 col-md-offset-3">
+                    <img src="{% static 'img/cart/success.png' %} " alt="" class="img-responsive" />
+                   <h4>Đơn hàng của bạn thêm thành công</h4>
+                   <p>Đơn hàng này cần được xử lý ,vui lòng kiểm tra các thông tin </p>
+                   <a href="javascript:window.location.reload(true)" class="next shp-btn">Xem đơn hàng</a>
+                   </div>
+               </div>
+            </fieldset>
 
 
 
-            </div>
 
         </div>
 
-        <!--footer-->
-        {% include './layouts/footer.html' %}
+
+    </div>
+
+    <!--footer-->
+    {% include './layouts/footer.html' %}
 
     </div>
     <!--/shp-cart-->
@@ -585,12 +620,12 @@
         });
     </script>
     {% if messages %}
-        <script>
-                $([document.documentElement, document.body]).animate({
-                    scrollTop: $("#msform").offset().top
-                }, 200);
-        </script>
-       
+    <script>
+        $([document.documentElement, document.body]).animate({
+            scrollTop: $("#msform").offset().top
+        }, 200);
+    </script>
+
     {% endif %}
 </body>
 
@@ -599,41 +634,54 @@
 </html>
 
 <script>
-    
-    
-        
     $('#update-cart').click(function () {
-        
-        $(".user #field1").each(function(){
+
+        $(".user #field1").each(function () {
             var soluong = $(this).find("input[name='soluong']").val();
             var slug = $(this).find("input[name='slug']").val();
             console.log(slug)
-            data ={
-                "soluong" : soluong,
-                "slug" : slug
+            data = {
+                "soluong": soluong,
+                "slug": slug
             }
             $.ajax({
-                url:  "/cart/update/"+slug+"/"+soluong+"",
-                type:  'post',
+                url: "/cart/update/" + slug + "/" + soluong + "",
+                type: 'post',
                 async: false,
-                dataType:  'json',
-                success:  function (data) {
-                   console.log(data)
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data)
                 }
             });
-        
+
 
         });
         location.reload();
     });
-    
-console.log('hello');
 
-$('#vanchuyen').click(function (e) { 
-    e.preventDefault();
-    var t = $('#txtdiachi').val()
-    var tp = $('#txtthanhpho').val()
-	$('#diachi').html(t+" "+tp)
-});
+    $('#vanchuyen').click(function (e) {
+        e.preventDefault();
+        var t = $('#txtdiachi').val()
+        var tp = $('#txtthanhpho').val()
+        $('#diachi').html(t + " " + tp)
+    });
 
+    var form = $('#form-thongtin');
+    $("#form-thongtin").submit(function (e) {
+
+        //prevent Default functionality
+        e.preventDefault();
+        $.ajax({
+            url: form.attr("url-order"),
+            type: 'get',
+            dataType: 'json',
+            data: form.serialize(),
+            success: function (data) {
+                if (data.status == 'ok') {
+                    console.log("hello")
+                    $('#next-frm').trigger("click");
+                }
+            }
+        });
+    });
 </script>
