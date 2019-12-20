@@ -72,7 +72,9 @@ class ProductImage(models.Model):
    
     thumbnail = FileBrowseField("Image", max_length=5000, directory="products/", extensions=[".jpg",".jpeg",".png"], blank=True)
     product = models.ForeignKey(Product,related_name='images', on_delete=models.CASCADE,null=True)
-    
+class ProductSize(models.Model):
+    name = models.CharField('Tên: ', max_length=50)
+    price = models.BigIntegerField('Giá',null=True)   
 class Brand(models.Model):
     name = models.CharField('Tên nhãn hiệu', max_length=200 )
     

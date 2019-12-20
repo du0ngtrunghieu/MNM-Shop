@@ -8,6 +8,15 @@ from django.db.models import Count,Max,Min
 # Phân trang
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
+VALID_SORTS = {
+    "day": "created_at",
+    "name": "title",
+    "price": "price",
+    "expensive":"-price",
+
+    
+}
+DEFAULT_SORT = 'created_at'
 def get_count_product_by_categories():
     #Product.objects.values('productfamily__categories__nameCat').annotate(count = Count('productfamily__categories__nameCat'))
     queryset = Category.objects.values('nameCat','slug').annotate(count = Count('category__productfamily')).order_by('nameCat')
@@ -18,13 +27,24 @@ def get_price_min_max():
 def get_count_product_by_brands():
     queryset = Brand.objects.values('name').annotate(count =Count('brands'))
     return queryset
+
 def ProductListPage(request):
+    sort_key = request.GET.get('sort', DEFAULT_SORT) # Replace pk with your default.
+    price_min = request.GET.get('start')
+    price_max = request.GET.get('end')
+    all_product = None
+    if price_max and price_min:
+        
+        all_product = Product.objects.filter(price__gte = price_min , price__lte=price_max).order_by("price")
+    else:
+        sort = VALID_SORTS.get(sort_key, DEFAULT_SORT)
+        all_product = Product.objects.filter( available = True).order_by(sort)
+    
     numb_display_page = 12
-    all_product = Product.objects.filter( available = True)
     categories_count = get_count_product_by_categories()
     max_min_price = get_price_min_max()
     brands_count = get_count_product_by_brands()
-    print(brands_count)
+    
     paginator = Paginator(all_product, numb_display_page)
     cart = Cart(request)
     page = request.GET.get('page')

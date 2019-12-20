@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 from django.conf import settings
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
@@ -149,6 +150,7 @@ STATIC_ROOT = os.path.join(VENV_PATH,'static_root')
 MEDIA_ROOT = os.path.join(VENV_PATH , 'media_root')
 
 CART_SESSION_ID = 'cart'
+LOGIN_REDIRECT_URL='/'
 DATE_INPUT_FORMATS = [
     '%Y-%m-%d %H:%M:%S',     # '2006-10-25 14:30:59'
     '%Y-%m-%d %H:%M:%S.%f',  # '2006-10-25 14:30:59.000200'

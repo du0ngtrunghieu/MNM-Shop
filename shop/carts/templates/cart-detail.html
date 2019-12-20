@@ -1,14 +1,11 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-
-<!-- Mirrored from theme.innovatory.in/Graby-shop/cart-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Nov 2019 15:12:28 GMT -->
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Giỏ hàng</title>
-    <link rel="icon" href="{% static "img/index/favicon.png"%}" sizes="16x16">
+    <link rel="icon" href="{% static 'img/index/favicon.png' %}" sizes="16x16">
     <!--css-->
     <link href="{% static "css/style.css"%}" rel="stylesheet" type="text/css">
     <!--BOOTSTRAP-->
@@ -188,7 +185,11 @@
                                 </tr>
                             </table>
                         </div>
+                        {% if user.is_authenticated %}
                         <a href="javascript:void(0)" class="next shp-btn pull-right">Thanh Toán</a>
+                        {% else %}
+                        <a href="/accounts/login" class="next shp-btn pull-right">Đăng nhập để thanh toán</a>
+                        {% endif%}
                     </div>
                     {% endif%}
                     {% endwith %}
@@ -203,7 +204,7 @@
 
               
               <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#Free" class="cart-btn free-del" aria-controls="Free" role="tab" data-toggle="tab">Vui long điền đầy đủ thông tin</a></li>
+                <li role="presentation" class="active"><a href="#Free" class="cart-btn free-del" aria-controls="Free" role="tab" data-toggle="tab">Vui lòng điền đầy đủ thông tin</a></li>
                 
               </ul>
             
@@ -213,11 +214,11 @@
                 	<div class="form-sec">
                     	<div class="row">
                     	<div class="form-body col-sm-6">
-                        	<p>First Name *</p>
+                        	<p>Họ *</p>
                             <input type="text" required placeholder="Enter your name" />
                         </div>
                         <div class="form-body col-sm-6">
-                        	<p>Last Name *</p>
+                        	<p>Tên *</p>
                             <input type="text" required placeholder="Enter your last name" />
                         </div>
                         <div class="form-body col-sm-6">
@@ -225,37 +226,24 @@
                             <input type="email" required placeholder="grabyshop@gmail.com" />
                         </div>
                         <div class="form-body col-sm-6">
-                        	<p>Phone *</p>
+                        	<p>Số Điện Thoại *</p>
                             <input type="text" required placeholder="9876543210" />
                         </div>
                         <div class="form-body col-sm-12">
-                        	<p>Address *</p>
-                            <textarea required placeholder="Street Address, Apartment, suite, unit etc. "></textarea>
+                        	<p>Địa Chỉ *</p>
+                            <textarea id="txtdiachi" required placeholder="Street Address, Apartment, suite, unit etc. "></textarea>
                         </div>
                         <div class="form-body col-sm-12">
-                        	<p>City *</p>
-                            <select>
-                            	<option>Zürich</option>
-                                <option>Lorem</option>
-                                <option>Ipsum</option>
-                                <option>Dolor</option>
-                                <option>Sit amet</option>
+                        	<p>Thành Phố *</p>
+                            <select id="txtthanhpho">
+                            	<option value="hue">Huế</option>
+                                <option value="hcm">Hồ Chí Minh</option>
+                                <option value="danang">Đà Nẵng</option>
+                                <option value="hanoi">Hà Nội</option>
+                                
                             </select>
                         </div>
-                        <div class="form-body col-sm-6">
-                        	<p>Country *</p>
-                            <select>
-                            	<option>switzerland</option>
-                                <option>Lorem</option>
-                                <option>Ipsum</option>
-                                <option>Dolor</option>
-                                <option>Sit amet</option>
-                            </select>
-                        </div>
-                        <div class="form-body col-sm-6">
-                        	<p>Zip code</p>
-                            <input type="text" required />
-                        </div>
+                        
                         <div class="clearfix"></div>
                         </div>
                         
@@ -265,7 +253,7 @@
                 
               </div>
               <a href="javascript:void(0)" class="cart-btn previous"><i class="flaticon-2-left-arrow"></i> Back</a>
-              <a href="javascript:void(0)" class="cart-btn next">Payment <i class="flaticon-5-thin-right-arrow"></i></a>
+              <a href="javascript:void(0)" class="cart-btn next" id="vanchuyen">Payment <i class="flaticon-5-thin-right-arrow"></i></a>
                         <div class="clearfix"></div>
               
             </div>
@@ -276,9 +264,9 @@
 
               
               <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#visa" class="cart-btn" aria-controls="visa" role="tab" data-toggle="tab"><img src="img/cart/payment-1.png" alt="" class="img-responsive" /></a></li>
-                <li role="presentation"><a href="#Master-card" aria-controls="Master-card" class="cart-btn" role="tab" data-toggle="tab"><img src="img/cart/payment-2.png" alt="" class="img-responsive" /></a></li>
-                <li role="presentation"><a href="#Paypal" aria-controls="Paypal" class="cart-btn" role="tab" data-toggle="tab"><img src="img/cart/payment-3.png" alt="" class="img-responsive" /></a></li>
+                <li role="presentation" class="active"><a href="#visa" class="cart-btn" aria-controls="visa" role="tab" data-toggle="tab"><img src="{% static 'img/cart/payment-1.png' %}" alt="" class="img-responsive" /></a></li>
+                <li role="presentation"><a href="#Master-card" aria-controls="Master-card" class="cart-btn" role="tab" data-toggle="tab"><img src="{% static 'img/cart/payment-2.png' %}" alt="" class="img-responsive" /></a></li>
+                <li role="presentation"><a href="#Paypal" aria-controls="Paypal" class="cart-btn" role="tab" data-toggle="tab"><img src="{% static 'img/cart/payment-3.png' %}" alt="" class="img-responsive" /></a></li>
               </ul>
             
               
@@ -464,7 +452,7 @@
                     </div>
                 </div>
               </div>
-              <a href="javascript:void(0)" class="cart-btn previous"><i class="flaticon-2-left-arrow"></i> Back</a>
+              <a href="javascript:void(0)" class="cart-btn previous"><i class="flaticon-2-left-arrow"></i> Trở Lại</a>
               <a href="javascript:void(0)" class="cart-btn next">Payment <i class="flaticon-5-thin-right-arrow"></i></a>
                         <div class="clearfix"></div>
               
@@ -474,18 +462,18 @@
          	<fieldset class="confirmation-tab delivery-tab">
          	<div class="col-md-12">
          	<div class="dilivery-info">
-            	<h4>Delivery information</h4>
+            	<h4>Thông Tin Giao Hàng</h4>
                 <div class="express">
                 	<i class="flaticon-6-express"></i>
-                    <p>Express Delivery - <span>980.50$</span></p>
+                    <p>Giao Hàng Nhanh - <span>Miễn Phí</span></p>
                 </div>
                 <div class="express">
                 	<i class="flaticon-placeholder-1"></i>
-                    <p>407/77 Donel Runn, Blueland NY 125 650.</p>
+                    <p id="diachi">407/77 Donel Runn, Blueland NY 125 650.</p>
                 </div>
                 <div class="express">
                 	<i class="flaticon-phone-call"></i>
-                    <p>+01 9876543210</p>
+                    <p id="sodienthoai">+01 9876543210</p>
                 </div>
                 
                 <div class="express deli-pay">
@@ -496,53 +484,50 @@
             </div>
             
             <div class="delivery-cart dilivery-info">
-            	<h4>CART</h4>
+            	<h4>Giỏ Hàng</h4>
                 <div class="cart-detail">
             	<table>
                 	<tbody>
-                    	<tr>
-                        	<td class="order">
-                            	<img src="img/cart/cart-1.jpg" alt="" class="img-responsive cart-img" />
-                                <div class="order-detail">
-                            	<p>Apple Watch Series 1 - 38 mm Silver Aluminium White Sport Band </p>
-                            	<span>5 - White - 1 pcs </span>
-                                </div>
-                            </td>
-                            <td class="order-price"><h5>670.50$</h5><h6>$950.20</h6></td>
-                        </tr>
                         
+                        {% for item in cart %}
                         <tr>
-                        	<td class="order order-head">
-                            	<img src="img/cart/cart-2.jpg" alt="" class="img-responsive cart-img" />
-                                <div class="order-detail">
-                            	<p>BEATS EP ON-EAR HEADPHONE </p>
-                            	<span>5 - Gold - 2 pcs  </span>
-                                </div>
-                            </td>
-                            <td class="order-price"><h5>540.00$</h5><h6>$820.20</h6></td>
+                                <td class="order">
+                                    <img src="{{ item.product.thumb.url}}" alt="" class="img-responsive cart-img" width="100px" height="100px"/>
+                                    <div class="order-detail">
+                                    <p>{{ item.product.title}}</p>
+                                    <span>x{{ item.quantity }}</span>
+                                    </div>
+                                    
+                                </td>
+                                <td class="order-price"><h5>{{ item.product.get_price_discount_vnd }}</h5><h6>{{ item.product.get_price_vnd }}</h6></td>
                         </tr>
+                        {% endfor %}
+                            
+                    	
+                        
+                        
                         
                         <tr class="total-price">
-                        	<td class="order"><h2>TOTAL</h2></td>
-                            <td class="order-price"><h3>5540.00$</h3></td>
+                        	<td class="order"><h2>Tổng</h2></td>
+                            <td class="order-price"><h3>{{ cart.get_total_price_vnd }}</h3></td>
                         </tr>
                     </tbody>
                 </table>
                 </div>
             </div>
             
-            <a href="javascript:void(0)" class="cart-btn previous"><i class="flaticon-2-left-arrow"></i> Back</a>
-            <a href="javascript:void(0)" class="next cart-btn shp-btn pull-right">Confirm Order</a>
+            <a href="javascript:void(0)" class="cart-btn previous"><i class="flaticon-2-left-arrow"></i> Trở về</a>
+            <a href="javascript:void(0)" class="next cart-btn shp-btn pull-right">Xác Nhận Đơn Hàng</a>
             </div>
          </fieldset>
          
          	<fieldset class="confirmation-tab delivery-tab">
          	<div class="col-md-12 success-order">
             	<div class="col-md-6 col-md-offset-3">
-         		<img src="img/cart/success.png" alt="" class="img-responsive" />
+         		<img src="{% static 'img/cart/success.png' %}" alt="" class="img-responsive" />
                 <h4>Congratulation. Your order is accepted Successfully</h4>
                 <p>Let me be clear. Not even close. We did not go by choise. We went because of necessity.</p>
-                <a href="javascript:void(0)" class="next shp-btn">Track order</a>
+                <a href="javascript:void(0)" class="next shp-btn">Kiểm Tra Đơn Hàng</a>
                 </div>
             </div>
          </fieldset>
@@ -641,4 +626,14 @@
         });
         location.reload();
     });
+    
+console.log('hello');
+
+$('#vanchuyen').click(function (e) { 
+    e.preventDefault();
+    var t = $('#txtdiachi').val()
+    var tp = $('#txtthanhpho').val()
+	$('#diachi').html(t+" "+tp)
+});
+
 </script>

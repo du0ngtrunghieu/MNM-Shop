@@ -44,7 +44,6 @@ $(".next").click(function(){
 });
 
 
-
 $(".previous").click(function(){
 	$pr1=$(this).parent();
 	if(animating) return false;

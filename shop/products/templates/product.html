@@ -61,8 +61,8 @@
                     <ul>
 
                         <li><a href="#"><span>Sắp xếp theo</span></a></li>
-                        <li><a href="#">Giá</a></li>
-                        <li><a href="#">Tên</a></li>
+                        <li><a href="?sort=price">Giá</a></li>
+                        <li><a href="?sort=name">Tên</a></li>
                         <li><a href="#">Ngày</a></li>
 
                     </ul>
@@ -91,7 +91,9 @@
                         </div>
                         <div class="product-body">
                             <p><a href="{{ a.get_absolute_url }}">{{ a.title }}</a></p>
+                            <h6>Đã Bán : 5</h6>
                             <h4>{{ a.get_price_discount_vnd }}</h4>
+                            
                             <div class="product-hover">
                                 <div class="add-cart-hover"><a href="{% url 'cart:add-cart' a.slug %}">
                                         <h6>Thêm vào giỏ</h6><i class="flaticon-3-signs" aria-hidden="true"></i>
@@ -191,7 +193,7 @@
                                 <div class="clearfix"></div>
                                 <div class="range-text">
                                     <h3><span id="amount">₫ {{max_min_price.min|intcomma}} - ₫{{max_min_price.max|intcomma}}</span></h3>
-                                    <button class="btn-custom">Tìm</button>
+                                    <a class="btn-custom" id="Find">Tìm</a>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -1111,7 +1113,9 @@
         var avg =({{ max_min_price.min}} + {{ max_min_price.max}})/2
         var avg_min = (avg+{{ max_min_price.min}})/2
         var avg_max = (avg +{{ max_min_price.max}})/2 
-        console.log(avg)
+        $("#amount").html("₫ " + formatNumber(avg_min) + " - ₫ " + formatNumber(avg_max));
+        var link = "?start="+avg_min+"&end="+avg_max
+        $('#Find').attr("href",link)
             $("#slider-range").slider({
                 range: true,
                 min: {{ max_min_price.min }},
@@ -1119,13 +1123,14 @@
                 values: [avg_min, avg_max],
                 slide: function (event, ui) {
                     $("#amount").html("₫ " + formatNumber(ui.values[0]) + " - ₫ " + formatNumber(ui.values[1]));
-                    
+                    var link = "?start="+ui.values[0]+"&end="+ui.values[1]
+                    $('#Find').attr("href",link)
 
                 }
             });
             $("#amount").val("$" + $("#slider-range").slider("values", 0) + " - $" + $("#slider-range").slider(
                 "values", 1));
-       
+            
     </script>
 
 </body>

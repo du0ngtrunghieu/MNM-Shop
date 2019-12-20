@@ -197,23 +197,27 @@
                 </ul>
                 <div class="detail-btm">
                     <div class="detail-row">
-                        <p class="text-uppercase">Size</p>
+                        <!-- <p class="text-uppercase">Size</p>
                         <ul class="size">
                             <li><a href="#">32 GB</a></li>
                             <li><a href="#">64 GB</a></li>
                             <li class="active"><a href="#">128 GB</a></li>
-                        </ul>
+                        </ul> -->
                     </div>
                     <div class="detail-row quantity-box">
+                        <form action="{% url 'cart:add-cart-with-quantity'%}" method="POST">
                         <p class="text-uppercase">Số lượng</p>
                         <div class="clearfix"></div>
                         <div class="input--filled">
+                            {% csrf_token %}
+                            <input type="hidden" name="slug" value="{{ product.slug}}">
                             <button type="button" class="sub"><i class="fa fa-minus" aria-hidden="true"></i></button>
-                            <input type="text" value="1" class="field">
+                            <input type="text" value="1" class="field" name="quantity">
                             <button type="button" class="add"><i class="fa fa-plus" aria-hidden="true"></i></button>
                             <div class="clearfix"></div>
                         </div>
-                        <a class="coupon" href="#">Thêm vào giỏ</a>
+                        <button class="coupon" type="submit">Thêm vào giỏ</button>
+                    </form>
                         <div class="action-icon pull-right">
                             <a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i>Wish list</a>
                             <a href="#"><i class="flaticon-refresh"></i>Compare</a>
@@ -230,7 +234,7 @@
                         <p><span>Tags: </span>Black, Brown, Red, Shoes, £0.00 - £150.00</p>
                     </div>
                     <div class="detail-row">
-                        <p><span>Share:</span></p>
+                        <p><span>Chia sẻ:</span></p>
                         <div class="soc-icon">
                             <a href="#" data-toggle="tooltip" data-placement="top" title=""
                                 data-original-title="Facebook"><i class="fa fa-facebook-f"></i></a>

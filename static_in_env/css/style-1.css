@@ -1,11 +1,11 @@
 @charset "utf-8";
 
 body{
-	font-family: 'Karla';
-	font-size:18px;
+	font-family: 'Roboto';
+	font-size:14px;
 	color:#5d5d5d;
 	overflow-x:hidden;
-	font-weight:400;
+	font-weight:250;
 }
 .padd-60{
 	padding:60px 0;
@@ -1909,7 +1909,7 @@ select::-ms-expand {
 }
 .pro-fg{
 	position:absolute;
-	width:75%;
+	
 	height:10px;
 	background-color:#ff3c20;
 	border-radius:5px;

@@ -12,10 +12,12 @@ def cart_add(request, slug):
     product = get_object_or_404(Product, slug=slug)
     cart.add(product=product, quantity=1)
     return redirect('cart:detail-cart')
-def cart_add_from_detail(request,slug ,quantity):
+def cart_add_from_detail(request):
     cart = Cart(request)
+    slug = request.POST.get("slug")
+    quantity = request.POST.get("quantity")
     product = get_object_or_404(Product, slug=slug)
-    cart.add(product=product, quantity=quantity)
+    cart.add(product=product, quantity=int(quantity))
     return redirect('cart:detail-cart')
 def cart_remove(request, slug):
     cart = Cart(request)
@@ -73,3 +75,4 @@ def cart_update(request,slug,quantity):
     messages.info(request, f'Cập nhật giỏ hàng thành công')       
     return JsonResponse({'status': 'true'})
     
+

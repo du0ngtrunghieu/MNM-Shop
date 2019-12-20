@@ -27,12 +27,11 @@ class Slider(models.Model):
 class HotDeal(models.Model):
     """Model definition for HotDeal."""
    
-    product = models.OneToOneField(Product,related_name='products', on_delete=models.CASCADE,null=True)
+    product = models.OneToOneField(Product,related_name='hotdeal', on_delete=models.CASCADE,null=True)
     # TODO: Define fields here
-    start_deal =  models.DateTimeField(default=now,editable=False)
+    start_deal =  models.DateTimeField("Ngày bắt đầu giảm giá")
     end_deal = models.DateTimeField("Ngày hết")
     available = models.BooleanField(default=True)
-    time_deal   = models.CharField(editable=False, max_length=50)
     
     class Meta:
         """Meta definition for HotDeal."""
@@ -42,8 +41,35 @@ class HotDeal(models.Model):
     def save(self,*args, **kwargs):
         if self.start_deal > self.end_deal:
             self.end_deal = self.start_deal
+            self.available = False
             
         super(HotDeal, self).save(*args, **kwargs)
     def __str__(self):
         """Unicode representation of HotDeal."""
-        return '{} - Thời gian: {}'.format(self.product,self.time_deal)
+        return '{}'.format(self.product)
+class SpecialOffer(models.Model):
+    """Model definition for Special Offer."""
+    product = models.OneToOneField(Product,related_name='specialoffer', on_delete=models.CASCADE,null=True)
+    # TODO: Define fields here
+    start_deal =  models.DateTimeField("Ngày bắt đầu giảm giá")
+    end_deal = models.DateTimeField("Ngày hết")
+    available = models.BooleanField(default=True)
+    discount_price = models.IntegerField('Giảm giá (%)')
+    save_price = models.BigIntegerField(editable=False ,blank=True)
+    # TODO: Define fields here
+    
+    class Meta:
+        """Meta definition for Seller."""
+
+        verbose_name = 'Ưu Đãi'
+        verbose_name_plural = 'Ưu đãi đặc biệt'
+    def save(self, *args, **kwargs):
+        if self.discount_price:
+           self.save_price = self.product.price - self.get_price_change()
+        super(SpecialOffer, self).save(*args, **kwargs) # Call the real save() method
+    def get_price_change(self):
+        # tiến sau khi giảm giá
+        return int(self.product.price - (self.product.price * self.discount_price/100))
+    def __str__(self):
+        """Unicode representation of Seller."""
+        return '{} ---- Tiền sau khi giảm giá {} - tiết kiệm {}'.format(self.product,self.get_price_change(),self.save_price)
