@@ -13,7 +13,6 @@ VALID_SORTS = {
     "name": "title",
     "price": "price",
     "expensive":"-price",
-
     
 }
 DEFAULT_SORT = 'created_at'
@@ -25,21 +24,26 @@ def get_price_min_max():
     queryset = Product.objects.aggregate(max = Max('price'),min = Min('price'))
     return queryset
 def get_count_product_by_brands():
-    queryset = Brand.objects.values('name').annotate(count =Count('brands'))
+    queryset = Brand.objects.values('name','id').annotate(count =Count('brands'))
     return queryset
 
 def ProductListPage(request):
-    sort_key = request.GET.get('sort', DEFAULT_SORT) # Replace pk with your default.
+    all_product = Product.objects.all();
+    sort_key = request.GET.get('sort') # Replace pk with your default.
     price_min = request.GET.get('start')
     price_max = request.GET.get('end')
-    all_product = None
+    category_sort = request.GET.get('category');
+    queryset="?" if price_max is None and price_max is None and sort_key is None and category_sort is None else ""
     if price_max and price_min:
-        
-        all_product = Product.objects.filter(price__gte = price_min , price__lte=price_max).order_by("price")
-    else:
+        all_product = all_product.filter(price__gte = price_min , price__lte=price_max)
+        queryset = queryset + "&start="+price_min+"&?end="+price_max
+    elif sort_key:
         sort = VALID_SORTS.get(sort_key, DEFAULT_SORT)
-        all_product = Product.objects.filter( available = True).order_by(sort)
-    
+        all_product = all_product.filter( available = True).order_by(sort)
+        queryset = queryset + "&sort="+sort_key
+    elif category_sort:
+        all_product = all_product.filter(productfamily__categories__slug=category_sort)
+        queryset = queryset + "&category="+category_sort
     numb_display_page = 12
     categories_count = get_count_product_by_categories()
     max_min_price = get_price_min_max()
@@ -48,6 +52,7 @@ def ProductListPage(request):
     paginator = Paginator(all_product, numb_display_page)
     cart = Cart(request)
     page = request.GET.get('page')
+    
     try:
         products = paginator.page(page)
     except PageNotAnInteger:
@@ -60,6 +65,7 @@ def ProductListPage(request):
         "categories_count":categories_count,
         "max_min_price":max_min_price,
         'brands_count':brands_count,
+        'queryset':queryset,
         
     }
 

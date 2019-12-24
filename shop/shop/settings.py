@@ -165,3 +165,4 @@ DATE_INPUT_FORMATS = [
     '%m/%d/%y %H:%M',        # '10/25/06 14:30'
     '%m/%d/%y',              # '10/25/06'
 ]
+AUTH_PASSWORD_VALIDATORS = []

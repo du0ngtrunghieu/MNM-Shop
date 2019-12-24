@@ -4,7 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.http import HttpResponseRedirect,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from products.models import Product
+from products.models import Product,StockProduct
 from .cart import Cart
 from .models import Coupon
 def cart_add(request, slug):
@@ -71,8 +71,14 @@ def cart_update(request,slug,quantity):
     if quantity ==0:
         cart.remove(product=product)
     else:
-        cart.add(product=product, quantity=quantity,update_quantity=True)
-    messages.info(request, f'Cập nhật giỏ hàng thành công')       
+        # kiểm tra số lượng trong kho so với số lượng update
+        check =StockProduct.objects.filter(product = product,in_stock__gt = quantity).exists()
+        if(check == True):
+            cart.add(product=product, quantity=quantity,update_quantity=True)
+            messages.info(request, f'Cập nhật giỏ hàng thành công')  
+        else:
+            messages.warning(request,f'Số lượng phải nhỏ hơn số lượng còn lại trong kho')
+        
     return JsonResponse({'status': 'true'})
     
 

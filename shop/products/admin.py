@@ -14,8 +14,9 @@ class PageAdminProduct(admin.ModelAdmin):
         return '{}'.format(obj.productfamily.categories.nameCat) 
     list_display= ('title','slug','price','available','productfamily','show_categories')
     inlines = (MultilImageProduct,MultilFeatureProduct,)
-
+class StockProductAdmin(admin.ModelAdmin):
+    list_display = ('product','is_stock','in_stock','is_sold')
 admin.site.register(Product,PageAdminProduct)
 admin.site.register(ProductImage)
 admin.site.register(Brand)
-admin.site.register(StockProduct)
+admin.site.register(StockProduct,StockProductAdmin)

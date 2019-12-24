@@ -21,7 +21,10 @@ class Order(models.Model):
         return 'Order {}'.format(self.id)
 
     def get_total_cost(self):
-        return sum(item.get_cost() for item in self.items.all()) - self.promo.amount
+        if self.promo:
+            return int(sum(item.get_cost() for item in self.items.all()) - self.promo.amount)
+        else:
+            return int(sum(item.get_cost() for item in self.items.all()))
 
 
 class OrderItem(models.Model):
@@ -35,3 +38,4 @@ class OrderItem(models.Model):
 
     def get_cost(self):
         return self.price * self.quantity
+    

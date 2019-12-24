@@ -5909,6 +5909,25 @@ a.more-btn:hover i{
 		margin-right:15px;
 		line-height:1;
 }
+.rate h3{
+	font-size:20px;
+	font-weight:700;
+	color:#ff3c20;
+	margin-top:8px;
+	display:inline-block;
+	vertical-align: middle;
+	margin-right:15px;
+	line-height:1;
+}
+.rate h3 del{
+	font-size:14px;
+	font-weight:400;
+	color:#ababab;
+	margin-left:8px;
+	vertical-align:inherit;
+	display:inline-block;
+	margin-top:-3px;
+}
 .rate h2 del{
 		font-size:16px;
 		font-weight:400;
@@ -5918,6 +5937,7 @@ a.more-btn:hover i{
 		display:inline-block;
 		margin-top:-3px;
 }
+
 label.offer-label{
 	text-align:center;
 	line-height:26px;
@@ -6603,6 +6623,7 @@ ul.size li a{
     font-size: 22px;
     margin-right: 0px;
 }
+
 .rate h2 del {
     font-size: 14px;
     margin-left: 0;
