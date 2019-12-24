@@ -13,4 +13,4 @@ $ python manage.py runserver
 
 ### Dương Trung Hiếu (16T1021041)
 ### Demo : Trang Chủ
-[images](\static_in_env\img-demo\trangchu.png)
+![images](\static_in_env\img-demo\trangchu.png)
