@@ -21,14 +21,16 @@
                     <div class="nav-mega-menu">
                                     <div class="nav-main-menu">
                                         <span>
-                                                <a href="product-list.html">Product-List</a>
-                                                <a href="product-grid.html">Product-Grid</a>
-                                                <a href="product-detail.html">Product-Detail</a>
+                                                
+                                                {% for a in categories.all %}
+                                                  <a href="">{{ a.nameCat}}</a>
+                                                {% endfor %}
+                                                  
                                         </span>
                                     </div>
                                 </div>
                 </li>
-                <li><a href="{% url 'product:list-products' %}">Phổ Biến</a></li>
+                <li><a href="{% url 'product:list-products' %}">Tất cả sản phẩm</a></li>
                 <li><a href="#">Chất Lượng</a></li>
                 <li><a href="#">Đang Sale</a></li>
                 

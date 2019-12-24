@@ -76,8 +76,7 @@ class ProductSize(models.Model):
     price = models.BigIntegerField('Giá',null=True)   
 class Brand(models.Model):
     name = models.CharField('Tên nhãn hiệu', max_length=200 )
-    
-
+    productfamily = models.ForeignKey(ProductFamily,related_name='brands_PF', on_delete=models.CASCADE,null=True)
     class Meta:
         verbose_name_plural = "Nhãn Hiệu"
 
