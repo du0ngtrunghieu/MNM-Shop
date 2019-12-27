@@ -4,15 +4,20 @@
             <a href="/"><img src="{% static 'img/S.png'%}" style="height: 74px;" alt="" class="img-responsive" /></a>
         </div>
         <div class="col-md-6 search">
-            <input type="text" name="search" placeholder="Tìm kiếm..." />
-            <select>
-                <option>Tất cả thể loại</option>
-                <option>Men</option>
-                <option>Women</option>
-                <option>Electronics</option>
-                <option>Smart Phones</option>
+            <form id="form-search">
+            <input type="text" id="search" placeholder="Tìm kiếm..." />
+            
+            <select name="category" id="category">
+                <option value="None">Tất cả thể loại</option>
+                
+                {% for a in categories.all %}
+                <option value="{{ a.slug}}">{{ a.nameCat}}</option>
+                {% endfor %}
+                    
+               
             </select>
             <div class="round search-round"><a href="#"><i class="flaticon-search"></i></a></div>
+        </form>
         </div>
         <div class="col-md-3 shopping-cart">
             <div class="icon-round">	
@@ -70,3 +75,4 @@
         </div>
         <div class="clearfix"></div>
     </div>
+

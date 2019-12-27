@@ -685,3 +685,18 @@
         });
     });
 </script>
+<script>
+    
+    $("#form-search").submit(function(e) {
+       e.preventDefault();//prevent the form from actually submitting
+       
+       var cate = $('#category').val();
+       var search = $('#search').val();
+       if(cate == "None"){
+           window.location = '/products?search='+search;
+       }else{
+           window.location = '/categories/'+cate+'?search='+search;
+       }
+      
+   });
+</script>

@@ -23,7 +23,7 @@
                                         <span>
                                                 
                                                 {% for a in categories.all %}
-                                                  <a href="">{{ a.nameCat}}</a>
+                                                  <a href="{% url 'category:list-category' a.slug %}">{{ a.nameCat}}</a>
                                                 {% endfor %}
                                                   
                                         </span>
@@ -31,8 +31,6 @@
                                 </div>
                 </li>
                 <li><a href="{% url 'product:list-products' %}">Tất cả sản phẩm</a></li>
-                <li><a href="#">Chất Lượng</a></li>
-                <li><a href="#">Đang Sale</a></li>
                 
                 
               </ul>

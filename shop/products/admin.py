@@ -11,8 +11,8 @@ class MultilFeatureProduct(admin.StackedInline):
    
 class PageAdminProduct(admin.ModelAdmin):
     def show_categories(self, obj):
-        return '{}'.format(obj.productfamily.categories.nameCat) 
-    list_display= ('title','slug','price','available','productfamily','show_categories')
+        return '{}'.format(obj.brands.productfamily.categories.nameCat) 
+    list_display= ('title','slug','price','available','brands',)
     inlines = (MultilImageProduct,MultilFeatureProduct,)
 class StockProductAdmin(admin.ModelAdmin):
     list_display = ('product','is_stock','in_stock','is_sold')

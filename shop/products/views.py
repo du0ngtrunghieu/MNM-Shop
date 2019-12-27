@@ -18,7 +18,7 @@ VALID_SORTS = {
 DEFAULT_SORT = 'created_at'
 def get_count_product_by_categories():
     #Product.objects.values('productfamily__categories__nameCat').annotate(count = Count('productfamily__categories__nameCat'))
-    queryset = Category.objects.values('nameCat','slug').annotate(count = Count('category__productfamily')).order_by('nameCat')
+    queryset = Category.objects.values('nameCat','slug').annotate(count = Count('category__brands_PF')).order_by('nameCat')
     return queryset
 def get_price_min_max():
     queryset = Product.objects.aggregate(max = Max('price'),min = Min('price'))
@@ -33,6 +33,7 @@ def ProductListPage(request):
     price_min = request.GET.get('start')
     price_max = request.GET.get('end')
     category_sort = request.GET.get('category');
+    search = request.GET.get('search')
     queryset="?" if price_max is None and price_max is None and sort_key is None and category_sort is None else ""
     if price_max and price_min:
         all_product = all_product.filter(price__gte = price_min , price__lte=price_max)
@@ -44,11 +45,13 @@ def ProductListPage(request):
     elif category_sort:
         all_product = all_product.filter(productfamily__categories__slug=category_sort)
         queryset = queryset + "&category="+category_sort
+    elif search:
+        all_product = all_product.filter(title__icontains=search)
     numb_display_page = 12
     categories_count = get_count_product_by_categories()
     max_min_price = get_price_min_max()
     brands_count = get_count_product_by_brands()
-    
+    category = Category.objects.filter(featured = True)
     paginator = Paginator(all_product, numb_display_page)
     cart = Cart(request)
     page = request.GET.get('page')
@@ -66,6 +69,7 @@ def ProductListPage(request):
         "max_min_price":max_min_price,
         'brands_count':brands_count,
         'queryset':queryset,
+        'categories':category,
         
     }
 

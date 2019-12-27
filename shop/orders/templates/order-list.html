@@ -196,6 +196,19 @@
     </script>
 </body>
 
-<!-- Mirrored from theme.innovatory.in/Graby-shop/product-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 29 Nov 2019 15:59:58 GMT -->
-
+<script>
+    
+    $("#form-search").submit(function(e) {
+       e.preventDefault();//prevent the form from actually submitting
+       
+       var cate = $('#category').val();
+       var search = $('#search').val();
+       if(cate == "None"){
+           window.location = '/products?search='+search;
+       }else{
+           window.location = '/categories/'+cate+'?search='+search;
+       }
+      
+   });
+</script>
 </html>

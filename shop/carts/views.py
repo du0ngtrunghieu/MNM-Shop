@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from products.models import Product,StockProduct
+from categories.models import Category
 from .cart import Cart
 from .models import Coupon
 def cart_add(request, slug):
@@ -33,7 +34,12 @@ def cart_remove_all(request):
 # Create your views here.
 def CartListPage(request):
     cart = Cart(request)
-    return render(request, 'cart-detail.html', {'cart': cart})
+    category = Category.objects.filter(featured = True)
+    context ={
+        'cart':cart,
+        'categories':category
+    }
+    return render(request, 'cart-detail.html', context)
 
 @require_POST
 def coupon_check(request):

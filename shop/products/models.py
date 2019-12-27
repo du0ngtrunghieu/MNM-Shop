@@ -20,7 +20,7 @@ class Product(models.Model):
     # phầm trăm giảm giá
     discount_price = models.BigIntegerField('Giảm giá (%)',blank=True, null=True)
     brands = models.ForeignKey("Brand",related_name='brands', on_delete=models.CASCADE,null=True)
-    productfamily = models.ForeignKey(ProductFamily,related_name='productfamily', on_delete=models.CASCADE,null=True)
+   
     label = models.CharField(choices=LABEL_CHOICES, max_length=20,null=True,blank=True)
     slug = models.SlugField(unique=True,editable=False , blank = True)
     description = models.TextField('Thông tin sản phẩm') 

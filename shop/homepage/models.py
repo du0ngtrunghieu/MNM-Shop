@@ -54,7 +54,7 @@ class SpecialOffer(models.Model):
     start_deal =  models.DateTimeField("Ngày bắt đầu giảm giá")
     end_deal = models.DateTimeField("Ngày hết")
     available = models.BooleanField(default=True)
-    discount_price = models.IntegerField('Giảm giá (%)')
+    
     save_price = models.BigIntegerField(editable=False ,blank=True)
     # TODO: Define fields here
     
@@ -64,12 +64,13 @@ class SpecialOffer(models.Model):
         verbose_name = 'Ưu Đãi'
         verbose_name_plural = 'Ưu đãi đặc biệt'
     def save(self, *args, **kwargs):
-        if self.discount_price:
+        if self.product.discount_price:
            self.save_price = self.product.price - self.get_price_change()
         super(SpecialOffer, self).save(*args, **kwargs) # Call the real save() method
     def get_price_change(self):
         # tiến sau khi giảm giá
-        return int(self.product.price - (self.product.price * self.discount_price/100))
+        if self.product.discount_price:
+            return int(self.product.price - (self.product.price * self.product.discount_price/100))
     def __str__(self):
         """Unicode representation of Seller."""
         return '{} ---- Tiền sau khi giảm giá {} - tiết kiệm {}'.format(self.product,self.get_price_change(),self.save_price)

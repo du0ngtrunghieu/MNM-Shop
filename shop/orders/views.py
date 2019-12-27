@@ -6,6 +6,7 @@ from .models import OrderItem,Order
 from products.models import StockProduct 
 from django.db.models import Q,F
 from django.contrib.auth.decorators import login_required
+from categories.models import Category
 
 
 # Create your views here.
@@ -13,9 +14,12 @@ from django.contrib.auth.decorators import login_required
 def order_list(request):
     cart = Cart(request)
     order = Order.objects.filter(user = request.user).order_by('-created')
+    category = Category.objects.filter(featured = True)
     context ={
         'cart':cart,
         'order':order,
+        'categories':category
+
     }
 
     return render(request,"order-list.html",context)

@@ -266,7 +266,7 @@
         </div>
 
         <!--top-rated-product-->
-        <div class="container top-rated">
+        <!-- <div class="container top-rated">
 
             <div class="col-md-4 col-sm-6 top-rated-product pt-60">
                 <h3><a href="#">Sản phẩm nổi bật</a></h3>
@@ -831,7 +831,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!--footer-->
         {% include './layouts/footer.html' %}
@@ -1045,7 +1045,19 @@
     </script>
 
 </body>
-
-<!-- Mirrored from theme.innovatory.in/Graby-shop/product-grid.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 29 Nov 2019 15:59:56 GMT -->
-
+<script>
+    
+    $("#form-search").submit(function(e) {
+       e.preventDefault();//prevent the form from actually submitting
+       
+       var cate = $('#category').val();
+       var search = $('#search').val();
+       if(cate == "None"){
+           window.location = '/products?search='+search;
+       }else{
+           window.location = '/categories/'+cate+'?search='+search;
+       }
+      
+   });
+</script>
 </html>
