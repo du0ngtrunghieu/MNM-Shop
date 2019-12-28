@@ -21,9 +21,8 @@ def get_count_product_by_brands():
 def index(request):
     return render(request,"category-list.html",{})
 def category_Page(request,slug):
-
     all_product = Product.objects.filter(brands__productfamily__categories__slug=slug);
-    sort_key = request.GET.get('sort') # Replace pk with your default.
+    sort_key = request.GET.get('sort') 
     price_min = request.GET.get('start')
     price_max = request.GET.get('end')
     category_sort = request.GET.get('category')

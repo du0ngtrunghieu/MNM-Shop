@@ -27,16 +27,16 @@ def HomePage(request):
     # Special Offer
     special_offer = SpecialOffer.objects.filter(Q(start_deal__lte=now()),Q(end_deal__gte=now()),available = True).annotate(sum_quatity = Sum('product__order_items__quantity')).order_by('product__discount_price')[:1]
     # Đang sale 
-    is_sale = Product.objects.filter(available = True).order_by('-discount_price')[:5]
+    is_sale = Product.objects.filter(available = True).order_by('-discount_price')[:6]
     # Hàng đầu : giá
-    top_product = Product.objects.filter(available =True).order_by('-price')[:5]
+    top_product = Product.objects.filter(available =True).order_by('-price')[:6]
     # mới nhất 
-    new_product = Product.objects.filter(available =True).order_by('-created_at')[:5]
+    new_product = Product.objects.filter(available =True).order_by('-created_at')[:6]
     # phổ biến : mua nhiều
-    buy_product = Product.objects.annotate(sum_quatity = Sum('order_items__quantity')).order_by('-sum_quatity')[:5]
+    buy_product = Product.objects.annotate(sum_quatity = Sum('order_items__quantity')).order_by('-sum_quatity')[:6]
     # Hàng cũ :
     old_product =  Product.objects.filter(available =True).order_by('created_at')[:5]
-    trend_product = Product.objects.annotate(sum_quatity = Sum('order_items__quantity')).order_by('-sum_quatity','price')[:5]
+    trend_product = Product.objects.annotate(sum_quatity = Sum('order_items__quantity')).order_by('-sum_quatity','price')[:6]
     product_category = Category.objects.all()[:4]
     
     context = {
